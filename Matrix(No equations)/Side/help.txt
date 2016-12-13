@@ -1,0 +1,21 @@
+Help:
+
+KEY: 
+In this document whenever F is presented, it represents a fraction or whole number
+Whenever C is presented, it represents only a whole number
+
+To add one row to another on the current matrix: FrC+FrC>rC
+To multiply a row by a scalar on the current matrix: FrC>rC
+To swap two rows on the current matrix: rC<>rC
+To print the current matrix: print
+To eliminate all fractions on a row of the current matrix: wholerC
+To reduce the current matrix to echelon form: echelon
+To bring up the help document: help
+To view all matrices in the given system: vm
+To change the current matrix to another: cC
+To multiply the current matrix by another and store it into the system: mxC
+To add a new matrix to the system: m[F,F,F:F,F,F:F,F,F]
+To add two matrices together: maC
+To subtract a matrix from current matrix: msC
+To remove a matrix from the list of matrices: rmC
+    The commas denote the separation of elements and the :'s represent the separation of the rows.
