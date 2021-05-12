@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5277d84fad3d05c43b5536a39a1060e8, type: 3}
+  m_Name: Feet
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: index
+      Entry: 3
+      Data: 3
+  slots:
+  - {fileID: 11400000, guid: 9dffdf2309153d74cab71ecc9a0e1783, type: 2}
+  - {fileID: 11400000, guid: 57526089001575745bbfadcd6c1888b2, type: 2}
+  - {fileID: 11400000, guid: 0a955c7983ae010458c5e1f96e82a8dc, type: 2}

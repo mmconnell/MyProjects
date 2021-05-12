@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ebb83bcfb7e49479e28e29d8d76bca, type: 3}
+  m_Name: Health
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: f89a00d9cd5980a41bbfaf684565e509, type: 2}
+    - {fileID: 11400000, guid: 1c797d49d2dd3df4fbdf24cb5ff75d42, type: 2}
+    - {fileID: 11400000, guid: 229b3402b55c67247a672c024c23512b, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: index
+      Entry: 3
+      Data: 0
+    - Name: threshold
+      Entry: 7
+      Data: 0|Ashen.DeliverySystem.ThresholdBuilder, Assembly-CSharp
+    - Name: thresholdType
+      Entry: 3
+      Data: 1
+    - Name: maxValue
+      Entry: 10
+      Data: 0
+    - Name: hasDecay
+      Entry: 5
+      Data: true
+    - Name: decayDelay
+      Entry: 10
+      Data: 1
+    - Name: decayRate
+      Entry: 10
+      Data: 2
+    - Name: retainRatioOnMaxHigher
+      Entry: 5
+      Data: true
+    - Name: retainRatioOnMaxLower
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+  listenOn:
+  - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
