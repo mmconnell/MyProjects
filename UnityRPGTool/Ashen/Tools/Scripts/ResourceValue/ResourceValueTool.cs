@@ -1,9 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using Ashen.DeliverySystem;
-using Sirenix.Serialization;
+﻿using Ashen.DeliverySystem;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using System;
 using Ashen.EquationSystem;
 
@@ -15,7 +11,33 @@ namespace Manager
         private A_ThresholdValue[] thresholdValues;
         private List<I_ThresholdListener>[] toListen;
 
-        public Dictionary<ResourceValue, Slider> sliderMap;
+        private ResourceValue abilityResourceValue;
+        public ResourceValue AbilityResourceValue
+        {
+            get
+            {
+                return abilityResourceValue;
+            }
+        }
+
+        private ResourceValueToolConfiguration defaultResourceValueToolConfiguration;
+        private ResourceValueToolConfiguration DefaultResourceValueToolConfiguration
+        {
+            get
+            {
+                if (!defaultResourceValueToolConfiguration)
+                {
+                    return DefaultValues.Instance.defaultResourceValueToolConfiguration;
+                }
+                return defaultResourceValueToolConfiguration;
+            }
+        }
+
+        public void Initialize(ResourceValueToolConfiguration resourceValueToolConfiguration)
+        {
+            this.defaultResourceValueToolConfiguration = resourceValueToolConfiguration;
+            Initialize();
+        }
 
         public override void Initialize()
         {
@@ -25,14 +47,9 @@ namespace Manager
             foreach (ResourceValue resourceValue in ResourceValues.Instance)
             {
                 toListen[(int)resourceValue] = new List<I_ThresholdListener>();
-                thresholdValues[(int)resourceValue] = resourceValue.threshold.BuildThresholdValue(toolManager);
-                if (sliderMap != null && sliderMap.TryGetValue(resourceValue, out Slider slider))
-                {
-                    SliderHandler sliderHandler = new SliderHandler(slider);
-                    toListen[(int)resourceValue].Add(sliderHandler);
-                }
+                thresholdValues[(int)resourceValue] = resourceValue.threshold.BuildThresholdValue(toolManager, resourceValue);
             }
-            
+            abilityResourceValue = DefaultResourceValueToolConfiguration.DefaultAbilityResource;
         }
 
         private void Start()
@@ -46,6 +63,7 @@ namespace Manager
                     {
                         damageTool.RegisterListener(damageType, thresholdValues[(int)resourceValue]);
                     }
+                    
                 }
             }
             foreach (A_ThresholdValue value in thresholdValues)
@@ -82,7 +100,19 @@ namespace Manager
                 }
             }
         }
-        
+
+        public void ApplyAmount(ResourceValue resourceValue, int total)
+        {
+            A_ThresholdValue value = thresholdValues[(int)resourceValue];
+            value.ApplyAmount(total);
+        }
+
+        public void RemoveAmount(ResourceValue resourceValue, int total)
+        {
+            A_ThresholdValue value = thresholdValues[(int)resourceValue];
+            value.RemoveAmount(total);
+        }
+
         public ThresholdEventValue GetValue(ResourceValue resourceValue)
         {
             return thresholdValues[(int)resourceValue].GetCurrentState();
@@ -144,8 +174,7 @@ namespace Manager
                     enabled = value.enabled,
                 };
                 I_ThresholdDecayManager manager = value.decayManager;
-                ThresholdDecayManager decayManager = manager as ThresholdDecayManager;
-                if (decayManager != null)
+                if (manager is ThresholdDecayManager decayManager)
                 {
                     decayManagerDatas[x] = new ThresholdValueDecayManagerSaveData
                     {
@@ -175,8 +204,7 @@ namespace Manager
                 ThresholdValueDecayManagerSaveData managerValue = saveData.decayManagerValues[x];
                 A_ThresholdValue value = thresholdValues[x];
                 value.Reset(thresholdValue.currentValue, thresholdValue.enabled);
-                ThresholdDecayManager manager = value.decayManager as ThresholdDecayManager;
-                if (manager != null)
+                if (value.decayManager is ThresholdDecayManager manager)
                 {
                     manager.Reset(managerValue.decay, managerValue.decayWait);
                 }

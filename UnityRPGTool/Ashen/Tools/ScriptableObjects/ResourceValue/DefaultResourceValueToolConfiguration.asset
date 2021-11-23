@@ -20,24 +20,6 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: unitySliderListeners
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Manager.ResourceValue, Assembly-CSharp],[UnityEngine.UI.Slider,
-        UnityEngine.UI]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[Manager.ResourceValue,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
+  defaultAbilityResource: {fileID: 11400000, guid: fdcf6cab45580d14783973268bf2b4bf,
+    type: 2}

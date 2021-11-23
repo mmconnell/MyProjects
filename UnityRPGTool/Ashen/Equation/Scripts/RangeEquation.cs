@@ -43,6 +43,15 @@ namespace Ashen.EquationSystem
             return Calculate(source, null, extraArguments);
         }
 
+        public float Calculate(I_DeliveryTool source)
+        {
+            DeliveryArgumentPacks deliveryArguments = PoolManager.Instance.deliveryArgumentsPool.GetObject();
+            EquationArgumentPack equationArguments = deliveryArguments.GetPack<EquationArgumentPack>();
+            float result = Calculate(source, equationArguments);
+            deliveryArguments.Disable();
+            return result;
+        }
+
         public float GetHigh(I_DeliveryTool source, I_DeliveryTool target, EquationArgumentPack extraArguments)
         {
             return high.Calculate(source, target, extraArguments);

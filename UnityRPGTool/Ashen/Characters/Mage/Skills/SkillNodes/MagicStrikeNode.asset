@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a434fc6e339ef1947b97347b8837da3e, type: 3}
+  m_Name: MagicStrikeNode
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: requirements
+      Entry: 6
+      Data: 
+  skillName: Magic Strike
+  category: {fileID: 11400000, guid: 76ebc182f9e85c64c995054898f890b4, type: 2}
+  maxRanks: 4
+  skill: {fileID: 11400000, guid: 993830e3b063ebd44bcb2bc51bbd739e, type: 2}
+  description: 
+  hasRequirements: 0
+  requirementsDisplayType: 0
+  skilNodeRequirements:
+    requiresBound: 0
+    sourceBound: 0
+    locationX: 0
+    locationY: 0

@@ -12,6 +12,7 @@ namespace Ashen.EquationSystem
     {
         float Calculate(I_DeliveryTool source, I_DeliveryTool target, EquationArgumentPack equationArguments);
         float Calculate(I_DeliveryTool source, EquationArgumentPack equationArguments);
+        float Calculate(I_DeliveryTool source);
         bool RequiresRebuild(I_DeliveryTool source, I_DeliveryTool target, EquationArgumentPack equationArgumentPack);
         I_Equation Rebuild(I_DeliveryTool source, I_DeliveryTool target, EquationArgumentPack equationArgumentPack);
         float GetLow(I_DeliveryTool source, I_DeliveryTool target, EquationArgumentPack equationArguments);

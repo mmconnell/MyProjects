@@ -71,7 +71,7 @@ namespace Manager
             }
         }
 
-        public void TakeDamageRaw(DamageType damageType, int damage, bool immediateReport)
+        public void TakeDamage(DamageType damageType, int damage)
         {
             Report(damageType, damage);
         }

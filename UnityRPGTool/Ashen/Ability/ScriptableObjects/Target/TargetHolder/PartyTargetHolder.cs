@@ -1,39 +1,89 @@
-﻿using Manager;
+﻿using Ashen.DeliverySystem;
+using Manager;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class PartyTargetHolder : I_TargetHolder
+public class PartyTargetHolder : A_TargetHolder<PartyTargetHolder>
 {
-    public I_Targetable target;
+    private bool resolvedTarget;
 
-    public I_TargetHolder Clone()
+    public override void GetRandomTargetable(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder)
+    {}
+
+    public override void GetTargetableByThreat(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder)
+    {}
+
+    public override bool HasNextTarget(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, I_AbilityAction ability)
     {
-        return new PartyTargetHolder();
+        return !resolvedTarget;
     }
 
-    public I_Targetable GetRandomTargetable(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    public override void Initialize()
     {
-        return targetParty.partyTargetable;
+        base.Initialize();
+        resolvedTarget = false;
     }
 
-    public I_Targetable GetTargetable(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    public override I_CombatProcessor ResolveTarget(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, I_AbilityAction ability)
     {
-        return targetParty.partyTargetable;
+        resolvedTarget = true;
+        ListActionBundle actions = new ListActionBundle();
+        List<PartyPosition> validPositions = GetValidPositions(source, sourceParty, targetParty, ability);
+        foreach (PartyPosition position in targetParty.GetActivePositions())
+        {
+            if (!validPositions.Contains(position))
+            {
+                continue;
+            }
+            ToolManager manager = targetParty.GetToolManager((int)position);
+            actions.Bundles.Add(new SubactionProcessor()
+            {
+                actionExecutable = new ActionExecutable()
+                {
+                    builder = ability.GetDeliveryPack(),
+                    source = source,
+                    target = manager,
+                    sourceAbility = ability,
+                }
+            });
+        }
+        return actions;
     }
 
-    public List<ToolManager> GetTargets()
+    public override void ResolveTargetRequest(A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder, PlayerInputState inputState)
     {
-        return this.target.GetTargets();
+        if (inputState.nextTarget == null || inputState.currentTarget != null || inputState.nextTarget == inputState.currentTarget)
+        {
+            inputState.nextTarget = null;
+            return;
+        }
+        List<PartyPosition> validPositions = GetValidPositions(inputState.currentlySelected, sourceParty, targetParty, actionHolder.sourceAbility);
+        
+        ToolManager nextTargetTM = inputState.nextTarget.GetTarget();
+        PartyPosition nextPosition = targetParty.GetPosition(nextTargetTM);
+
+        if (!validPositions.Contains(nextPosition))
+        {
+            inputState.nextTarget = null;
+            return;
+        }
+
+        inputState.currentTarget = inputState.nextTarget;
+
+        foreach (PartyPosition position in targetParty.GetActivePositions())
+        {
+            if (validPositions.Contains(position))
+            {
+                targetParty.GetTargetable(position).Selected();
+            }
+        }
     }
 
-    public void ResolveTarget(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    protected override void CleanupInternal(A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder, PlayerInputState inputState)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void SetTarget(I_Targetable targetable)
-    {
-        this.target = targetable;
+        foreach (PartyPosition position in targetParty.GetActivePositions())
+        {
+            targetParty.GetTargetable(position).Deselected();
+        }
     }
 }

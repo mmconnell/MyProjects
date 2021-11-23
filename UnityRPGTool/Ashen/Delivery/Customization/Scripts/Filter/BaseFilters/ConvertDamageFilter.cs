@@ -22,17 +22,16 @@ namespace Ashen.DeliverySystem
         public override bool Apply(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks deliveryArgumentsPack, DeliveryResultPack deliveryResult)
         {
             DamageResult damageResult = deliveryResult.GetResult<DamageResult>(DeliveryResultTypes.Instance.DAMAGE_RESULT_TYPE);
-            int[] damageDone = damageResult.DamageDone;
             int total = 0;
             foreach (DamageType damageType in fromDamageTypes.enums)
             {
-                if (damageDone[(int)damageType] > 0)
+                if (damageResult.GetDamage(damageType) > 0)
                 {
-                    total += damageDone[(int)damageType];
-                    damageDone[(int)damageType] = 0;
+                    total += damageResult.GetDamage(damageType);
+                    damageResult.ResetDamage(damageType);
                 }
             }
-            damageDone[(int)toDamageType] += total;
+            damageResult.AddDamage(toDamageType, total);
             return total > 0;
         }
     }

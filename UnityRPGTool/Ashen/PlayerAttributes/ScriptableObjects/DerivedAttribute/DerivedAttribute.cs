@@ -10,7 +10,7 @@ using UnityEngine;
  * A character attribute defines the core values that make up the general power and effectiveness of a character
  **/
 [CreateAssetMenu(fileName = nameof(DerivedAttribute), menuName = "Custom/Enums/" + nameof(DerivedAttributes) + "/Type")]
-public class DerivedAttribute : A_Attribute<DerivedAttribute, DerivedAttributes>
+public class DerivedAttribute : A_Attribute<DerivedAttribute, DerivedAttributes, float>
 {
     public static string AttributeType = nameof(DerivedAttribute);
     public Equation equation;

@@ -17,7 +17,6 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
-    - {fileID: 11400000, guid: 94e22cd36cc711e4b88e505f25e7935a, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -27,8 +26,8 @@ MonoBehaviour:
       Entry: 7
       Data: 0|Ashen.DeliverySystem.ExtendedEffectBuilder, Assembly-CSharp
     - Name: key
-      Entry: 6
-      Data: 
+      Entry: 1
+      Data: Bleeding
     - Name: tagHandler
       Entry: 7
       Data: 1|Ashen.DeliverySystem.TagHandler, Assembly-CSharp
@@ -64,12 +63,18 @@ MonoBehaviour:
     - Name: effect
       Entry: 7
       Data: 5|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: useWeapon
+      Entry: 5
+      Data: false
     - Name: damageType
       Entry: 10
       Data: 0
+    - Name: value
+      Entry: 7
+      Data: 6|Ashen.DeliverySystem.ScalingValueBuilder, Assembly-CSharp
     - Name: equation
       Entry: 7
-      Data: 6|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+      Data: 7|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
         Assembly-CSharp]], Assembly-CSharp
     - Name: usingConstant
       Entry: 3
@@ -79,7 +84,7 @@ MonoBehaviour:
       Data: 
     - Name: constant
       Entry: 7
-      Data: 7|Ashen.EquationSystem.Equation, Assembly-CSharp
+      Data: 8|Ashen.EquationSystem.Equation, Assembly-CSharp
     - Name: testData
       Entry: 5
       Data: false
@@ -94,20 +99,17 @@ MonoBehaviour:
       Data: 
     - Name: equationComponents
       Entry: 7
-      Data: 8|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+      Data: 9|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 10
       Data: 1
     - Name: 
       Entry: 7
-      Data: 9|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+      Data: 10|Ashen.EquationSystem.BasicValue, Assembly-CSharp
     - Name: value
       Entry: 4
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -125,12 +127,21 @@ MonoBehaviour:
       Data: false
     - Name: currentIndex
       Entry: 3
-      Data: 2
+      Data: 1
     - Name: canBeCached
       Entry: 5
       Data: true
     - Name: 
       Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: multiplier
+      Entry: 6
+      Data: 
+    - Name: flat
+      Entry: 6
       Data: 
     - Name: 
       Entry: 8

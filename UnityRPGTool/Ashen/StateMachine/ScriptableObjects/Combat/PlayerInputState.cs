@@ -1,0 +1,190 @@
+﻿using JoshH.UI;
+using Manager;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class PlayerInputState : SingletonScriptableObject<PlayerInputState>, I_GameState
+{
+    [NonSerialized]
+    public Ability chosenAbility;
+    private I_Targetable selectedTarget;
+    public I_Targetable SelectedTarget
+    {
+        get
+        {
+            return selectedTarget;
+        }
+        set
+        {
+            if (selectedTarget != null)
+            {
+                //chosenAbility.ProcessTargetDisplay(sourceParty, targetParty, actionHolder, selectedTarget, value);
+            }
+            selectedTarget = value;
+        }
+    }
+    [NonSerialized]
+    public I_Targetable chosenTarget;
+    [NonSerialized]
+    public A_PartyManager sourceParty;
+    [NonSerialized]
+    public ToolManager currentlySelected;
+    [NonSerialized]
+    public bool backRequested = false;
+    [NonSerialized]
+    public bool movePrevious = false;
+    [NonSerialized]
+    public I_Targetable nextTarget;
+    [NonSerialized]
+    public I_Targetable currentTarget;
+    [NonSerialized]
+    public MoveDirection moveDirection;
+    [NonSerialized]
+    public CombatOption hoveredCombatOption;
+    [NonSerialized]
+    public CombatOption submittedCombatOption;
+    [NonSerialized]
+    public SkillSelector hoveredSkillSelector;
+    [NonSerialized]
+    public SkillSelector submittedSKillSelector;
+    [NonSerialized]
+    public int turn = 0;
+
+    private Dictionary<ToolManager, ChooseCombatOption> previousChoices;
+
+    public void Initialize()
+    {
+        previousChoices = new Dictionary<ToolManager, ChooseCombatOption>();
+    }
+
+    public void Reset()
+    {
+        chosenAbility = null;
+        selectedTarget = null;
+        chosenTarget = null;
+        sourceParty = PlayerPartyHolder.Instance.partyManager;
+        backRequested = false;
+        movePrevious = false;
+        ActionOptionsManager.Instance.previouslySelected = null;
+        nextTarget = null;
+        currentTarget = null;
+        moveDirection = MoveDirection.None;
+        hoveredCombatOption = null;
+        submittedCombatOption = null;
+        hoveredSkillSelector = null;
+        submittedSKillSelector = null;
+    }
+    
+    public IEnumerator RunState(GameStateRequest request, GameStateResponse response)
+    {
+        Reset();
+
+        A_PartyManager playerParty = PlayerPartyHolder.Instance.partyManager;
+        PartyUIManager playerUiManager = PartyUIManager.Instance;
+        ExecuteInputState executeInputState = ExecuteInputState.Instance;
+        EnemyPartyManager enemyParty = EnemyPartyHolder.Instance.enemyPartyManager;
+
+        CombatLog.Instance.ClearMessages();
+        CombatLog.Instance.AddMessage("What will you do?");
+
+        ActionOptionsManager.Instance.gameObject.SetActive(true);
+        currentlySelected = playerParty.GetFirst();
+        //EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(ActionOptionsManager.Instance.first.gameObject);
+        if (currentlySelected != null)
+        {
+            A_CharacterSelector manager = PartyUIManager.Instance.positionToManager[playerParty.GetPosition(currentlySelected)];
+            manager.TurnSelectionStart();
+        }
+        while (currentlySelected != null)
+        {
+            Reset();
+            GameStateManager internalPlayerInput = CreateInstance<GameStateManager>();
+            ChooseCombatOption initialState = null;
+            if (!previousChoices.TryGetValue(currentlySelected, out initialState))
+            {
+                initialState = new ChooseCombatOption();
+            }
+            internalPlayerInput.initialState = initialState;
+            GameStateResponse newGameStateResponse = new GameStateResponse();
+            yield return internalPlayerInput.RunState(request, newGameStateResponse);
+            if (movePrevious)
+            {
+                ToolManager previous = playerParty.GetPrevious(currentlySelected);
+                if (previous != null)
+                {
+                    ChangeTurn(playerParty, playerUiManager, currentlySelected, previous);
+                    executeInputState.ClearActions(previous);
+                    currentlySelected = previous;
+                    continue;
+                }
+            }
+            else
+            {
+                previousChoices[currentlySelected] = initialState;
+            }
+            ToolManager next = playerParty.GetNext(currentlySelected);
+            if (next != null)
+            {
+                ChangeTurn(playerParty, playerUiManager, currentlySelected, next);
+                currentlySelected = next;
+                continue;
+            }
+            ChangeTurn(playerParty, playerUiManager, currentlySelected, null);
+            currentlySelected = null;
+            EventSystem.current.SetSelectedGameObject(null);
+            //while (chosenAbility == null && !backRequested)
+            //{
+            //    yield return null;
+            //}
+            //targetParty = chosenAbility.targetParty == TargetParty.PLAYER ? playerParty : enemyParty;
+            //actionHolder = new ActionHolder(chosenAbility, currentlySelected, sourceParty, targetParty);
+            //Target target = chosenAbility.GetTargetType();
+            //I_TargetHolder targetHolder = target.BuildTargetHolder();
+            //I_Targetable targetable = targetHolder.GetTargetable(sourceParty, targetParty, actionHolder);
+            //actionHolder.targetHodler = targetHolder;
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(targetable.GetSelectableObject().gameObject);
+            //while (chosenTarget == null)
+            //{
+            //    yield return null;
+            //}
+            //targetHolder.SetTarget(chosenTarget);
+            //executeInputState.AddCombatAction(actionHolder);
+            //if (currentlySelected != null)
+            //{
+            //    A_CharacterSelector manager = playerUiManager.positionToManager[playerParty.GetPosition(currentlySelected)];
+            //    manager.GetComponent<UIGradient>().enabled = true;
+            //}
+            //currentlySelected = playerParty.GetNext(currentlySelected);
+            //EventSystem.current.SetSelectedGameObject(null);
+            //EventSystem.current.SetSelectedGameObject(ActionOptionsManager.Instance.first);
+            //if (currentlySelected != null)
+            //{
+            //    A_CharacterSelector manager = playerUiManager.positionToManager[playerParty.GetPosition(currentlySelected)];
+            //    manager.GetComponent<UIGradient>().enabled = false;
+            //}
+        }
+        ActionOptionsManager.Instance.gameObject.SetActive(false);
+        yield return null;
+        Reset();
+        response.nextState = EnemyInputState.Instance;
+    }
+
+    private void ChangeTurn(A_PartyManager party, PartyUIManager playerUiManager, ToolManager lastTurn, ToolManager nextTurn)
+    {
+        if (lastTurn != null)
+        {
+            A_CharacterSelector manager = playerUiManager.positionToManager[party.GetPosition(lastTurn)];
+            manager.TurnSelectionEnd();
+        }
+        if (nextTurn != null)
+        {
+            A_CharacterSelector manager = playerUiManager.positionToManager[party.GetPosition(nextTurn)];
+            manager.TurnSelectionStart();
+        }
+    }
+}

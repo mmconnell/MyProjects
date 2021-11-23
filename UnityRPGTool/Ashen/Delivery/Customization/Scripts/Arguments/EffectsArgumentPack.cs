@@ -8,12 +8,49 @@ namespace Ashen.DeliverySystem
     {
         private static readonly List<I_Effect> EMPTY_EFFECTS = new List<I_Effect>();
         private List<I_Effect> effects;
-
-        public DamageType WeaponDamageType { get; set; }
+        private float[] effectScales;
+        private bool[] enabledEffectScales;
 
         public EffectsArgumentPack()
         {
             effects = new List<I_Effect>();
+            effectScales = new float[EffectFloatArguments.Count];
+            enabledEffectScales = new bool[EffectFloatArguments.Count];
+        }
+
+        public float GetFloatScale(A_EffectFloatArgument argument)
+        {
+            if (!enabledEffectScales[(int)argument])
+            {
+                return 1f;
+            }
+            return effectScales[(int)argument];
+        }
+
+        public float GetFloatFlat(A_EffectFloatArgument argument)
+        {
+            if (!enabledEffectScales[(int)argument])
+            {
+                return 0f;
+            }
+            return effectScales[(int)argument];
+        }
+
+        public void SetFloatArgument(A_EffectFloatArgument argument, float value)
+        {
+            effectScales[(int)argument] = value;
+            enabledEffectScales[(int)argument] = true;
+        }
+
+        public void CopyFloatArguments(EffectsArgumentPack other)
+        {
+            foreach (A_EffectFloatArgument arg in EffectFloatArguments.Instance)
+            {
+                if (other.enabledEffectScales[(int)arg])
+                {
+                    SetFloatArgument(arg, other.effectScales[(int)arg]);
+                }
+            }
         }
 
         public override I_DeliveryArgumentPack Initialize()
@@ -23,36 +60,26 @@ namespace Ashen.DeliverySystem
 
         public List<I_Effect> GetEffects()
         {
-            if (effects == null)
-            {
-                return EMPTY_EFFECTS;
-            }
             return effects;
         }
 
         public void AddEffect(I_Effect effect)
         {
-            if (effects == null)
-            {
-                effects = new List<I_Effect>();
-            }
             effects.Add(effect);
         }
 
         public void AddEffects(List<I_Effect> effects)
         {
-            if (this.effects == null)
-            {
-                this.effects = new List<I_Effect>();
-            }
             this.effects.AddRange(effects);
         }
 
         public override void Clear()
         {
-            if (effects != null)
+            effects.Clear();
+            foreach (A_EffectFloatArgument argument in EffectFloatArguments.Instance)
             {
-                effects.Clear();
+                effectScales[(int)argument] = 0;
+                enabledEffectScales[(int)argument] = false;
             }
         }
     }

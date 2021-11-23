@@ -33,11 +33,20 @@ namespace Ashen.DeliverySystem
 
         public I_Ticker Build(I_DeliveryTool owner, I_DeliveryTool target, EquationArgumentPack extraArguments)
         {
-            if (duration == null || duration.Value == null)
+            int? calculatedDuration = null;
+            int? calculatedFrequency = null;
+
+            if (duration != null && duration.Value != null)
             {
-                return new TimeTicker(null, (int)frequency.Value.Calculate(owner, target, extraArguments), TimeRegistry.Instance.turnBased);
+                calculatedDuration = (int)duration.Value.Calculate(owner, target, extraArguments);
             }
-            return new TimeTicker((int)duration.Value.Calculate(owner, target, extraArguments), (int)frequency.Value.Calculate(owner, target, extraArguments), TimeRegistry.Instance.turnBased);
+
+            if (frequency != null && frequency.Value != null)
+            {
+                calculatedFrequency = (int)frequency.Value.Calculate(owner, target, extraArguments);
+            }
+
+            return new TimeTicker(calculatedDuration, calculatedFrequency, TimeRegistry.Instance.turnBased);
         }
     }
 }

@@ -39,3 +39,9 @@ MonoBehaviour:
     type: 2}
   defaultResourceValueToolConfiguration: {fileID: 11400000, guid: 47cbad5936603f848ab5ab0f3fb4bb3a,
     type: 2}
+  defaultTargetAttributeToolConfiguration: {fileID: 11400000, guid: 3e6b6880245edab4b8107d2b5e6e9b56,
+    type: 2}
+  defaultAbilityHolderConfiguration: {fileID: 11400000, guid: f93ff9ed6ccbd7f40b24e2a391ff592e,
+    type: 2}
+  defaultEquipmentToolConfiguration: {fileID: 11400000, guid: 4e1ef3925d0599a4fb724be6abefca69,
+    type: 2}

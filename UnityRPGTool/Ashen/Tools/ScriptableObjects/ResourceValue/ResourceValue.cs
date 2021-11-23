@@ -13,5 +13,8 @@ namespace Manager
         public List<DamageType> listenOn;
         [Hide, Title("Threshold")]
         public ThresholdBuilder threshold;
+        public Color color1;
+        public Color color2;
+        public string displayName;
     }
 }

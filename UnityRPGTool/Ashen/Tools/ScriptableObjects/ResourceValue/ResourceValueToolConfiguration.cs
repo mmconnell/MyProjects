@@ -1,28 +1,27 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using Sirenix.Serialization;
 
 namespace Manager
 {
     [CreateAssetMenu(fileName = "ResourceValueToolConfiguration", menuName = "Custom/Tool/ResourceValueToolConfiguration")]
     public class ResourceValueToolConfiguration : SerializedScriptableObject
     {
-        [OdinSerialize]
-        public Dictionary<ResourceValue, Slider> unitySliderListeners;
-        public Dictionary<ResourceValue, Slider> UnitySliderListeners
+        [SerializeField]
+        private ResourceValue defaultAbilityResource;
+        public ResourceValue DefaultAbilityResource
         {
             get
             {
-                if (unitySliderListeners != null)
+                if (!defaultAbilityResource)
                 {
-                    return unitySliderListeners;
+                    if (this == DefaultValues.Instance.defaultResourceValueToolConfiguration)
+                    {
+                        return null;
+                    }
+                    return DefaultValues.Instance.defaultResourceValueToolConfiguration.DefaultAbilityResource;
                 }
-                return new Dictionary<ResourceValue, Slider>();
+                return defaultAbilityResource;
             }
-
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Ashen.DeliverySystem
         private I_Tickable tickable;
         private int? originalDuration;
         private int? duration;
-        private int frequency;
+        private int? frequency;
         private int nextTick;
         [NonSerialized]
         private bool enabled;
@@ -27,9 +27,9 @@ namespace Ashen.DeliverySystem
 
         private TimeTicker() { }
 
-        public TimeTicker(int? duration, int frequency, bool turn = false)
+        public TimeTicker(int? duration, int? frequency, bool turn = false)
         {
-            if (frequency < 0)
+            if (frequency != null && frequency < 0)
             {
                 Logger.ErrorLog("Cannot have a frequency less than 0");
             }
@@ -40,11 +40,14 @@ namespace Ashen.DeliverySystem
                 timed = true;
             }
             this.frequency = frequency;
-            nextTick = frequency;
+            if (frequency != null)
+            {
+                nextTick = frequency.Value;
+            }
             this.turn = turn;
         }
 
-        public TimeTicker(int? duration, int frequency, int? currentDuration, int nextTick, bool turn = false) : this(duration, frequency, turn)
+        public TimeTicker(int? duration, int? frequency, int? currentDuration, int nextTick, bool turn = false) : this(duration, frequency, turn)
         {
             this.nextTick = nextTick;
             this.duration = currentDuration;
@@ -79,7 +82,10 @@ namespace Ashen.DeliverySystem
         public void Reset()
         {
             duration = originalDuration;
-            nextTick = frequency;
+            if (frequency != null)
+            {
+                nextTick = frequency.Value;
+            }
         }
 
         public void Reset(int? duration, int frequency)
@@ -100,11 +106,14 @@ namespace Ashen.DeliverySystem
             {
                 duration -= 1;
             }
-            nextTick -= 1;
-            tickable.UpdateTime();
-            if (nextTick <= 0)
+            if (frequency != null)
             {
-                nextTick = frequency;
+                nextTick -= 1;
+            }
+            tickable.UpdateTime();
+            if (frequency != null && nextTick <= 0)
+            {
+                nextTick = frequency.Value;
                 tickable.Tick();
             }
             if (timed && duration <= 0f)

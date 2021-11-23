@@ -221,7 +221,7 @@ public class ValueToggleButtonAttributeDrawer<T> : OdinAttributeDrawer<ValueTogg
         int count = 0;
         foreach (ValueDropdownItem<T> item in valueDropdownItems)
         {
-            if (!value.Values[count].Equals(item.Value))
+            if (value.Values.Length <= count || !value.Values[count].Equals(item.Value))
             {
                 return true;
             }

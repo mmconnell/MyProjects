@@ -13,10 +13,10 @@ namespace Ashen.DeliverySystem
         [OdinSerialize]
         private Reference<I_Equation> ticks = default;
 
-        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target)
+        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks arguments)
         {
             int result = (int)ticks.Value.Calculate(owner, null);
-            return new TickFilter(filter.Build(owner, target), result);
+            return new TickFilter(filter.Build(owner, target, arguments), result);
         }
     }
 }

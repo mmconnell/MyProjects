@@ -9,7 +9,7 @@ using UnityEngine;
  * A character attribute defines the core values that make up the general power and effectiveness of a character
  **/
 [CreateAssetMenu(fileName = nameof(BaseAttribute), menuName = "Custom/Enums/" + nameof(BaseAttributes) + "/Type")]
-public class BaseAttribute : A_Attribute<BaseAttribute, BaseAttributes>
+public class BaseAttribute : A_Attribute<BaseAttribute, BaseAttributes, float>
 {
     public static string AttributeType = nameof(BaseAttribute);
 

@@ -23,7 +23,7 @@ public class Logger : SingletonScriptableObject<Logger>
 
     private void ErrorLogInner(string toLog)
     {
-        if (isLoggingDebug)
+        if (isLoggingError)
         {
             logTool.ErrorLog(toLog);
         }
@@ -48,7 +48,7 @@ public class Logger : SingletonScriptableObject<Logger>
     {
         if (Instance)
         {
-            if (Instance.isLoggingDebug)
+            if (Instance.isLoggingError)
             {
                 Instance.ErrorLogInner(toLog);
             }

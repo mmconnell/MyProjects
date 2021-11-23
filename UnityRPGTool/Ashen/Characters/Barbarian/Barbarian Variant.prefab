@@ -9,6 +9,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1395799980284733238, guid: d27a6c2779ee78145959a07cceb353ef,
         type: 3}
+      propertyPath: statusToolConfiguration
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1395799980284733238, guid: d27a6c2779ee78145959a07cceb353ef,
+        type: 3}
+      propertyPath: abilityHolderConfiguration
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a7ba43aa1810a24fb4af157515c21ed,
+        type: 2}
+    - target: {fileID: 1395799980284733238, guid: d27a6c2779ee78145959a07cceb353ef,
+        type: 3}
+      propertyPath: attributeToolConfiguration
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1395799980284733238, guid: d27a6c2779ee78145959a07cceb353ef,
+        type: 3}
+      propertyPath: resistanceToolConfiguration
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1395799980284733238, guid: d27a6c2779ee78145959a07cceb353ef,
+        type: 3}
       propertyPath: baseAttributeToolConfiguration
       value: 
       objectReference: {fileID: 11400000, guid: d47dc0898d2ff5b4e96ea9d682df6497,

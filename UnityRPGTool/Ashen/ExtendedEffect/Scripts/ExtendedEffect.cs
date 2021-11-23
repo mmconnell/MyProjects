@@ -18,10 +18,10 @@ namespace Ashen.DeliverySystem
      **/
     public class ExtendedEffect : I_ExtendedEffect
     {
+        [ReadOnly, ShowInInspector]
         private List<ExtendedEffectContainer> statusEffects;
         private bool disabled = false;
 
-        [OdinSerialize]
         public string key;
 
         [HideInInspector]
@@ -42,6 +42,8 @@ namespace Ashen.DeliverySystem
         public List<ExtendedEffectTag> tags;
         [HideInInspector]
         public bool savable;
+
+        private DeliveryArgumentPacks arguments;
 
         public ExtendedEffect() { }
 
@@ -80,17 +82,18 @@ namespace Ashen.DeliverySystem
                 this.tags.AddRange(tags);
             }
             long milliseconds = Environment.TickCount;
-            key = key + " - " + milliseconds;
+            this.key = key + " - " + milliseconds;
             statusEffects = new List<ExtendedEffectContainer>();
             baseTriggers = new List<ExtendedEffectContainer>[ExtendedEffectTriggers.Count];
             for (int x = 0; x < baseTriggers.Length; x++)
             {
                 baseTriggers[x] = new List<ExtendedEffectContainer>();
             }
+            this.arguments = deliveryArguments;
             for (int x = 0; x < baseStatusEffects.Count; x++) 
             {
                 I_ComponentBuilder statusEffect = baseStatusEffects[x];
-                AddBaseStatusEffect(statusEffect);
+                AddBaseStatusEffect(statusEffect, deliveryArguments);
             }
         }
 
@@ -102,7 +105,6 @@ namespace Ashen.DeliverySystem
             }
             if (!enabled)
             {
-                
                 StatusTool statusTool = ((DeliveryTool)target).toolManager.Get<StatusTool>();
                 statusTool.RegisterStatusEffect(this);
                 foreach(ExtendedEffectTag tag in tags)
@@ -187,6 +189,10 @@ namespace Ashen.DeliverySystem
                         }
                     }
                 }
+                if (arguments != null)
+                {
+                    arguments.Disable();
+                }
                 enabled = false;
             }
             if (Ticker != null)
@@ -228,6 +234,12 @@ namespace Ashen.DeliverySystem
             if (!deliveryContainer.Empty())
             {
                 DeliveryArgumentPacks deliveryArguments = PoolManager.Instance.deliveryArgumentsPool.GetObject();
+                if (arguments != null)
+                {
+                    EffectsArgumentPack sourceEffectArguments = arguments.GetPack<EffectsArgumentPack>();
+                    EffectsArgumentPack newEffectArguments = deliveryArguments.GetPack<EffectsArgumentPack>();
+                    newEffectArguments.CopyFloatArguments(sourceEffectArguments);
+                }
                 DeliveryUtility.Deliver(deliveryContainer, owner, target, deliveryArguments);
                 deliveryContainer.Clear();
                 deliveryArguments.Disable();
@@ -236,16 +248,14 @@ namespace Ashen.DeliverySystem
             deliveryContainer = null;
         }
 
-        public virtual ExtendedEffectContainer AddBaseStatusEffect(I_ComponentBuilder baseStatusEffect)
+        public virtual ExtendedEffectContainer AddBaseStatusEffect(I_ComponentBuilder baseStatusEffect, DeliveryArgumentPacks deliveryArguments)
         {
-            return AddStatusEffect(baseStatusEffect, ExtendedEffectType.NORMAL);
+            return AddStatusEffect(baseStatusEffect, ExtendedEffectType.NORMAL, deliveryArguments);
         }
 
-        public virtual ExtendedEffectContainer AddStatusEffect(I_ComponentBuilder statusEffect, ExtendedEffectType type)
+        public virtual ExtendedEffectContainer AddStatusEffect(I_ComponentBuilder statusEffect, ExtendedEffectType type, DeliveryArgumentPacks deliveryArguments)
         {
-            DeliveryArgumentPacks packs = PoolManager.Instance.deliveryArgumentsPool.GetObject();
-            I_ExtendedEffectComponent createdStatusEffect = statusEffect.Build(owner, target, packs);
-            packs.Disable();
+            I_ExtendedEffectComponent createdStatusEffect = statusEffect.Build(owner, target, deliveryArguments);
             if (createdStatusEffect == null)
             {
                 return new ExtendedEffectContainer();

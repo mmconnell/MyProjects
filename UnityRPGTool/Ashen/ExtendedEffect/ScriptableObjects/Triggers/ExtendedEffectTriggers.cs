@@ -15,5 +15,12 @@ namespace Ashen.DeliverySystem
         public ExtendedEffectTrigger UpdateTick;
         public ExtendedEffectTrigger TurnStart;
         public ExtendedEffectTrigger TurnEnd;
+        public ExtendedEffectTrigger ActionStart;
+        public ExtendedEffectTrigger ActionEnd;
+        public ExtendedEffectTrigger Targeted;
+        public ExtendedEffectTrigger Effected;
+        public ExtendedEffectTrigger BuffRecieved;
+        public ExtendedEffectTrigger BattleStart;
+        public ExtendedEffectTrigger BattleEnd;
     }
 }

@@ -11,6 +11,9 @@ namespace Manager
         public StatusToolConfiguration statusToolConfiguration;
         public BaseAttributeToolConfiguration baseAttributeToolConfiguration;
         public ResourceValueToolConfiguration resourceValueToolConfiguration;
+        public TargetAttributeToolConfiguration targetAttributeToolConfiguration;
+        public AbilityHolderConfiguration abilityHolderConfiguration;
+        public EquipmentToolConfiguration equipmentToolConfiguration;
 
         private void Awake()
         {
@@ -45,10 +48,26 @@ namespace Manager
             if (!gameObject.GetComponent<ResourceValueTool>())
             {
                 ResourceValueTool resourceValueTool = gameObject.AddComponent<ResourceValueTool>();
+                resourceValueTool.Initialize(resourceValueToolConfiguration);
             }
             if (!gameObject.GetComponent<TriggerTool>())
             {
                 TriggerTool triggerTOol = gameObject.AddComponent<TriggerTool>();
+            }
+            if (!gameObject.GetComponent<TargetAttributeTool>())
+            {
+                TargetAttributeTool targetTool = gameObject.AddComponent<TargetAttributeTool>();
+                targetTool.Initialize(targetAttributeToolConfiguration);
+            }
+            if (!gameObject.GetComponent<AbilityHolder>())
+            {
+                AbilityHolder abilityHolder = gameObject.AddComponent<AbilityHolder>();
+                abilityHolder.Initialize(abilityHolderConfiguration);
+            }
+            if (!gameObject.GetComponent<EquipmentTool>())
+            {
+                EquipmentTool equipmentTool = gameObject.AddComponent<EquipmentTool>();
+                equipmentTool.Initialize(equipmentToolConfiguration);
             }
         }
     }

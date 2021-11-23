@@ -5,11 +5,9 @@ using Manager;
 
 public class EnableAbilityComponent : A_SimpleComponent
 {
-    private A_Ability ability;
+    private AbilitySO ability;
 
-    private bool valid = false;
-
-    public EnableAbilityComponent(A_Ability ability)
+    public EnableAbilityComponent(AbilitySO ability)
     {
         this.ability = ability;
     }
@@ -18,16 +16,13 @@ public class EnableAbilityComponent : A_SimpleComponent
     {
         DeliveryTool deliveryTool = dse.target as DeliveryTool;
         AbilityHolder abilityHolder = deliveryTool.toolManager.Get<AbilityHolder>();
-        valid = abilityHolder.GrantAbility(ability);
+        abilityHolder.GrantAbility(dse.key, ability.abilityBuilder.BuildAbility());
     }
 
     public override void Remove(ExtendedEffect dse, ExtendedEffectContainer container)
     {
-        if (valid)
-        {
-            DeliveryTool deliveryTool = dse.target as DeliveryTool;
-            AbilityHolder abilityHolder = deliveryTool.toolManager.Get<AbilityHolder>();
-            abilityHolder.RevokeAbility(ability);
-        }
+        DeliveryTool deliveryTool = dse.target as DeliveryTool;
+        AbilityHolder abilityHolder = deliveryTool.toolManager.Get<AbilityHolder>();
+        abilityHolder.RevokeAbility(dse.key);
     }
 }

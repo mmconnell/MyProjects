@@ -11,11 +11,15 @@ public class SkillOptionExecutor : MonoBehaviour, I_OptionExecutor
     public void ExecuteOption(ToolManager source)
     {
         SkillSelector skillSelector = skillPanel.GetFirstSkill();
-        if (skillSelector != null)
+        AbilityHolder abilityHolder = source.Get<AbilityHolder>();
+        if (abilityHolder.GetCount() == 0)
         {
-            skillPanel.enabler.SetActive(true);
-            EventSystemHelper.Instance.UpdateSelected(skillSelector.gameObject);
+            Cancel();
+            return;
         }
+        skillPanel.enabler.SetActive(true);
+        skillPanel.LoadSkills(abilityHolder);
+        EventSystemHelper.Instance.UpdateSelected(skillSelector.gameObject);
     }
 
     public void Cancel()
@@ -28,5 +32,25 @@ public class SkillOptionExecutor : MonoBehaviour, I_OptionExecutor
     public void TurnOff()
     {
         skillPanel.enabler.SetActive(false);
+    }
+
+    public void InitializeOption(ToolManager source)
+    {
+        AbilityHolder abilityHolder = source.Get<AbilityHolder>();
+        if (abilityHolder)
+        {
+            if (abilityHolder.GetCount() > 0)
+            {
+                combatOption.Valid = true;
+            }
+            else
+            {
+                combatOption.Valid = false;
+            }
+        }
+        else
+        {
+            combatOption.Valid = false;
+        }
     }
 }

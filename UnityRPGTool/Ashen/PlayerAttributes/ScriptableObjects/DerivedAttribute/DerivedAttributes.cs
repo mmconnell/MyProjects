@@ -7,6 +7,8 @@ using UnityEngine;
  **/
 [CreateAssetMenu(fileName = nameof(DerivedAttributes), menuName = "Custom/Enums/" + nameof(DerivedAttributes) + "/Types")]
 public class DerivedAttributes : A_EnumList<DerivedAttribute, DerivedAttributes>
-{}
+{
+    public DerivedAttribute threat;
+}
 
 

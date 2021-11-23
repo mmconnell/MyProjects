@@ -18,20 +18,20 @@ public class GameStateManager : SerializedScriptableObject, I_GameState
             throw new System.Exception("Cannot initialize " + this.name + " because the passed in runner is null or not active");
         }
         I_GameState nextState = initialState;
-        GameStateRequest newRequest = new GameStateRequest
-        {
-            lastState = this,
-            runner = request.runner
-        };
+        I_GameState lastState = this;
         while (nextState != null)
         {
             GameStateResponse newResponse = new GameStateResponse();
-            Debug.Log(nextState);
+            GameStateRequest newRequest = new GameStateRequest
+            {
+                lastState = lastState,
+                runner = request.runner
+            };
             yield return request.runner.StartCoroutine(nextState.RunState(newRequest, newResponse));
-            newRequest.lastState = nextState;
+            lastState = nextState;
             nextState = newResponse.nextState;
         }
-        response.completedState = this;
+        response.completedState = initialState;
     }
 }
 

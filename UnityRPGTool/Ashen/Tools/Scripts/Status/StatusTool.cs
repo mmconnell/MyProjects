@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using static Ashen.DeliverySystem.ExtendedEffect;
 
 namespace Manager
@@ -31,8 +32,87 @@ namespace Manager
             }
         }
         private DeliveryPackScriptableObject[] statusEffectResults;
+        
+        private StatusEffectSymbolManagerUI symbolUI;
+        private List<StatusSymbolRegistery> activeSymbols;
 
-        public DeliveryResultPack currentPack;
+        public StatusEffectSymbolManagerUI SymbolUI
+        {
+            set
+            {
+                if (symbolUI)
+                {
+                    foreach (StatusSymbolRegistery registry in activeSymbols)
+                    {
+                        registry.symbolUI.poolableBehaviour.Disable();
+                    }
+                    symbolUI.ResolveSymbols();
+                }
+                symbolUI = value;
+                if (symbolUI)
+                {
+                    symbolUI.RegisterStatusEffectSymbols(activeSymbols);
+                }
+            }
+        }
+
+        public StatusSymbolRegistery AddActiveSymbol(Sprite sprite, string message, float initialPercentage = 1f)
+        {
+            StatusSymbolRegistery registry = new StatusSymbolRegistery()
+            {
+                sprite = sprite,
+                message = message,
+                percentage = initialPercentage,
+                id = Environment.TickCount.ToString()
+            };
+            if (symbolUI)
+            {
+                registry = symbolUI.RegisterStatusEffectSymbol(registry);
+            }
+            activeSymbols.Add(registry);
+            return registry;
+        } 
+
+        public void RemoveActiveSymbol(string id)
+        {
+            StatusSymbolRegistery registry = default;
+            bool found = false;
+            for (int x = 0; x < activeSymbols.Count; x++)
+            {
+                if (id == activeSymbols[x].id)
+                {
+                    found = true;
+                    registry = activeSymbols[x];
+                    activeSymbols.RemoveAt(x);
+                    break;
+                }
+            }
+            if (found)
+            {
+                if (symbolUI)
+                {
+                    symbolUI.UnregisterStatusEffectSymbol(registry.symbolUI);
+                }
+            }
+        }
+
+        public void UpdateActiveSymbol(string id, float percentage)
+        {
+            for (int x = 0; x < activeSymbols.Count; x++)
+            {
+                if (id == activeSymbols[x].id)
+                {
+                    StatusSymbolRegistery registry = activeSymbols[x];
+                    registry.percentage = percentage;
+                    if (registry.symbolUI)
+                    {
+                        registry.symbolUI.filler.fillAmount = percentage;
+                    }
+                    activeSymbols[x] = registry;
+                    break;
+                }
+            }
+        }
 
         public void Initialize(StatusToolConfiguration config)
         {
@@ -55,6 +135,7 @@ namespace Manager
                 statusTagGroups[x] = new HashSet<ExtendedEffect>();
             }
             extendedEffects = new List<ExtendedEffect>();
+            activeSymbols = new List<StatusSymbolRegistery>();
         }
 
         public override void OnDestroy()
@@ -67,13 +148,19 @@ namespace Manager
             ResourceValueTool resourceValueTool = toolManager.Get<ResourceValueTool>();
             foreach (ResourceValue resourceValue in ResourceValues.Instance)
             {
-                Logger.DebugLog("DamageType being registered: " + resourceValue);
-                resourceValueTool.UnRegesterThresholdMetListener(resourceValue, this);
+                Logger.DebugLog("DamageType being unregistered: " + resourceValue);
+                if (resourceValueTool)
+                {
+                    resourceValueTool.UnRegesterThresholdMetListener(resourceValue, this);
+                }
             }
             TriggerTool triggerTool = toolManager.Get<TriggerTool>();
             foreach (ExtendedEffectTrigger trigger in ExtendedEffectTriggers.Instance)
             {
-                triggerTool.UnregisterTriggerListener(trigger, this);
+                if (triggerTool)
+                {
+                    triggerTool.UnregisterTriggerListener(trigger, this);
+                }
             }
         }
 
@@ -92,9 +179,33 @@ namespace Manager
             }
         }
 
-        public void RegisterStatusEffect(ExtendedEffect extendedEffect)
+        public void RegisterStatusEffect(ExtendedEffect effect)
         {
-            extendedEffects.Add(extendedEffect);
+            RegisterStatusEffect(effect, false);
+        }
+
+        public void RegisterStatusEffect(ExtendedEffect extendedEffect, bool allowDuplicates)
+        {
+            if (allowDuplicates)
+            {
+                extendedEffects.Add(extendedEffect);
+            }
+            else
+            {
+                for (int x = 0; x < extendedEffects.Count; x++)
+                {
+                    ExtendedEffect effect = extendedEffects[x];
+                    if (effect.key == extendedEffect.key)
+                    {
+                        effect.Disable(false);
+                    }
+                    if (!effect.enabled)
+                    {
+                        extendedEffects.RemoveAt(x);
+                        x--;
+                    }
+                }
+            }
         }
 
         public void UnRegisterStatusEffect(ExtendedEffect extendedEffect)

@@ -22,7 +22,7 @@ namespace Ashen.DeliverySystem
         [OdinSerialize, HideLabel, Title("To"), EnumSODropdown]
         private DamageType toDamageType = default;
 
-        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target)
+        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks arguments)
         {
             return new ConvertDamageFilter(fromDamageTypes, toDamageType);
         }

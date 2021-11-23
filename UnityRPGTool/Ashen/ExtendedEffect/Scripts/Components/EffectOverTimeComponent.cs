@@ -44,7 +44,5 @@ namespace Ashen.DeliverySystem
             }
             return statusTriggers;
         }
-
-        
     }
 }

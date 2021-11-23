@@ -3,17 +3,17 @@ using System.Collections;
 
 public class PoolableBehaviour : MonoBehaviour, I_Poolable
 {
-    public void Disable()
+    public virtual void Disable()
     {
         enabled = false;
     }
 
-    public bool Enabled()
+    public virtual bool Enabled()
     {
         return enabled;
     }
 
-    public void Initialize()
+    public virtual void Initialize()
     {
         enabled = true;
     }

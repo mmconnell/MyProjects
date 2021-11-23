@@ -17,7 +17,6 @@ namespace Ashen.DeliverySystem
             POST_OFFENSIVE
         }
 
-
         [OdinSerialize, EnumToggleButtons, HideLabel, Title("Type")]
         private FilterType filterType = default;
 
@@ -26,7 +25,7 @@ namespace Ashen.DeliverySystem
 
         public I_ExtendedEffectComponent Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks deliveryArguments)
         {
-            I_Filter filter = this.filter.Build(owner, target);
+            I_Filter filter = this.filter.Build(owner, target, deliveryArguments);
             if (filter == null)
             {
                 return null;

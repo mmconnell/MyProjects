@@ -4,32 +4,74 @@ using Sirenix.Serialization;
 using Sirenix.OdinInspector;
 using Ashen.VariableSystem;
 using Ashen.EquationSystem;
+using System.Collections.Generic;
+using Manager;
 
 namespace Ashen.DeliverySystem
 {
     [InlineProperty]
     public class DamagePackBuilder : I_EffectBuilder
     {
+        [HideLabel, EnumToggleButtons, OdinSerialize]
+        private DamageTypeOption option;
         [OdinSerialize]
         private bool useWeapon;
-        [OdinSerialize, HideLabel, EnumSODropdown, HideIf(nameof(useWeapon))]
+        [OdinSerialize, HideLabel, EnumSODropdown]
+        [ShowIf("@" + nameof(option) + " == " + nameof(DamageTypeOption) + "." + nameof(DamageTypeOption.Singular) + 
+            " && !" + nameof(useWeapon))]
         private DamageType damageType = default;
-        [HorizontalGroup(nameof(DamagePack), width: 0.5f), OdinSerialize, HideLabel]
-        public Reference<I_Equation> equation = default;
+        [OdinSerialize, EnumSODropdown, HideLabel, Title("Enabled Damage Types")]
+        [ShowIf("@" + nameof(option) + " == " + nameof(DamageTypeOption) + "." + nameof(DamageTypeOption.Collection) +
+            " && !" + nameof(useWeapon))]
+        private List<DamageType> damageTypes = default;
+        [OdinSerialize, Hide]
+        private ScalingValueBuilder value;
 
         public I_Effect Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks deliveryArguments)
         {
-            if (useWeapon)
+            EffectsArgumentPack effectArgs = deliveryArguments.GetPack<EffectsArgumentPack>();
+            float damageScale = effectArgs.GetFloatScale(EffectFloatArguments.Instance.reservedDamageScale);
+            float total = damageScale * value.Build(owner, target, deliveryArguments);
+            DamageType newDamageType = null;
+            if (option == DamageTypeOption.Singular)
             {
-                DamageType damageType = deliveryArguments.GetPack<EffectsArgumentPack>().WeaponDamageType;
-                if (damageType == null)
+                if (useWeapon)
                 {
-                    Logger.ErrorLog("Weapon damage type could not be resolved, defaulting to normal damage type");
-                    return new DamagePack(DamageTypes.Instance.NORMAL, equation.Value.Calculate(owner, target, deliveryArguments.GetPack<EquationArgumentPack>()));
+                    EquipmentTool ownerEt = (owner as DeliveryTool).toolManager.Get<EquipmentTool>();
+                    List<DamageType> damageTypes = ownerEt.GetWeaponDamageTypes();
+                    if (damageTypes == null || damageTypes.Count <= 0)
+                    {
+                        Logger.ErrorLog("Weapon damage type could not be resolved, defaulting to normal damage type");
+                        newDamageType = DamageTypes.Instance.NORMAL;
+                    }
+                    newDamageType = damageTypes[0];
                 }
-                return new DamagePack(damageType, equation.Value.Calculate(owner, target, deliveryArguments.GetPack<EquationArgumentPack>()));
+                else
+                {
+                    newDamageType = damageType;
+                }
+                return new DamagePack(newDamageType, total);
             }
-            return new DamagePack(damageType, equation.Value.Calculate(owner, target, deliveryArguments.GetPack<EquationArgumentPack>()));
+            else
+            {
+                List<DamageType> newDamageTypes = new List<DamageType>();
+                if (useWeapon)
+                {
+                    EquipmentTool ownerEt = (owner as DeliveryTool).toolManager.Get<EquipmentTool>();
+                    List<DamageType> damageTypes = ownerEt.GetWeaponDamageTypes();
+                    if (damageTypes == null || damageTypes.Count <= 0)
+                    {
+                        Logger.ErrorLog("Weapon damage type could not be resolved, defaulting to normal damage type");
+                        newDamageTypes.Add(DamageTypes.Instance.NORMAL);
+                    }
+                    newDamageTypes.AddRange(damageTypes);
+                }
+                else
+                {
+                    newDamageTypes.AddRange(damageTypes);
+                }
+                return new CollectiveDamagePack(newDamageTypes, total);
+            }
         }
 
         public string visualize(int depth)
@@ -39,7 +81,7 @@ namespace Ashen.DeliverySystem
             {
                 vis += "\t";
             }
-            vis += "Deal [" + equation.Value.ToString() + "] OF ";
+            vis += "Deal [" + value.ToString() + "] OF ";
             if (useWeapon)
             {
                 vis += " weapon's damage type";
@@ -50,5 +92,10 @@ namespace Ashen.DeliverySystem
             }
             return vis;
         }
+    }
+
+    public enum DamageTypeOption
+    {
+        Singular, Collection
     }
 }

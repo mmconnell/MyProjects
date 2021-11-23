@@ -3,9 +3,9 @@ using System.Collections;
 using Manager;
 using Ashen.DeliverySystem;
 
-public abstract class A_Attribute<T, E> : A_EnumSO<T, E> where T : A_Attribute<T, E> where E : A_EnumList<T, E>
+public abstract class A_Attribute<T, E, F> : A_EnumSO<T, E> where T : A_Attribute<T, E, F> where E : A_EnumList<T, E>
 {
-    public abstract float Get(I_DeliveryTool toolManager);
+    public abstract F Get(I_DeliveryTool toolManager);
     public abstract string GetAttributeType();
 
     public bool isOperation()

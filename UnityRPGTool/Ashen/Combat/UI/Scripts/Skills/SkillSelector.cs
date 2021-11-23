@@ -3,23 +3,49 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using JoshH.UI;
+using TMPro;
 
 public class SkillSelector : Selectable, ISubmitHandler, ICancelHandler
 {
     public UIGradient gradient;
-    public A_Ability ability;
+    public Ability ability;
     public SkillOptionExecutor skillOptionExecutor;
+    public SkillPanelHandler skillPanel;
+    public TextMeshProUGUI skillCost;
+    public TextMeshProUGUI skillName;
+    public Image background;
 
-    public void Initialize(SkillOptionExecutor executor, A_Ability ability)
+    private bool valid;
+    public bool Valid
     {
-        this.skillOptionExecutor = executor;
-        this.ability = ability;
+        set
+        {
+            if (value)
+            {
+                background.color = skillPanel.validOption.background;
+                gradient.LinearColor1 = skillPanel.validOption.color1;
+                gradient.LinearColor2 = skillPanel.validOption.color2;
+                skillName.color = skillPanel.validOption.name;
+                skillCost.color = skillPanel.validOption.cost;
+            }
+            else
+            {
+                background.color = skillPanel.invalidOption.background;
+                gradient.LinearColor1 = skillPanel.invalidOption.color1;
+                gradient.LinearColor2 = skillPanel.invalidOption.color2;
+                skillName.color = skillPanel.invalidOption.name;
+                skillCost.color = skillPanel.invalidOption.cost;
+            }
+            valid = value;
+        }
     }
 
     public void OnSubmit(BaseEventData eventData)
     {
-        PlayerInputState.Instance.chosenAbility = ability;
-        skillOptionExecutor.TurnOff();
+        if (valid)
+        {
+            PlayerInputState.Instance.submittedSKillSelector = this;
+        }
     }
 
     protected override void Start()
@@ -30,16 +56,19 @@ public class SkillSelector : Selectable, ISubmitHandler, ICancelHandler
 
     public override void OnSelect(BaseEventData eventData)
     {
-        gradient.enabled = true;
+        PlayerInputState.Instance.hoveredSkillSelector = this;
     }
 
     public override void OnDeselect(BaseEventData eventData)
-    {
-        gradient.enabled = false;
-    }
+    {}
 
     public void OnCancel(BaseEventData eventData)
     {
-        skillOptionExecutor.Cancel();
+        PlayerInputState.Instance.backRequested = true;
+    }
+
+    public void GradientEnabled(bool enabled)
+    {
+        gradient.enabled = enabled;
     }
 }

@@ -10,7 +10,7 @@ using Ashen.EquationSystem;
 
 namespace Ashen.DeliverySystem
 {
-    public abstract class A_ThresholdValue : I_Cacheable, I_DamageListener
+    public abstract class A_ThresholdValue : I_Cacheable, I_DamageListener, I_TriggerListener
     {
         public abstract void ClearDamage();
         public abstract void ApplyAmount(int damage);
@@ -28,6 +28,17 @@ namespace Ashen.DeliverySystem
             {
                 decayManager.Init(this, deliveryTool);
             }
+            TriggerTool triggerTool = (deliveryTool as DeliveryTool).toolManager.Get<TriggerTool>();
+            if (triggerBuilders != null)
+            {
+                for (int x = 0; x < triggerBuilders.Length; x++)
+                {
+                    if (triggerBuilders[x] != null)
+                    {
+                        triggerTool.RegisterTriggerListener(ExtendedEffectTriggers.Instance[x], this);
+                    }
+                }
+            }
         }
 
         private List<I_ThresholdListener> thresholdMetListener;
@@ -40,12 +51,16 @@ namespace Ashen.DeliverySystem
         protected bool retainRatioOnMaxHigher;
         protected bool retainRatioOnMaxLower;
 
+        protected ResourceValue resourceValue;
+
         public int currentValue;
         protected I_DeliveryTool deliveryTool;
         public bool enabled;
         public I_ThresholdDecayManager decayManager;
 
-        public A_ThresholdValue(DerivedAttribute maxValue, I_ThresholdDecayManager manager, bool retainRatioOnHigher, bool retainRatioOnLower)
+        public ThresholdTriggerEventBuilder[] triggerBuilders;
+
+        public A_ThresholdValue(DerivedAttribute maxValue, ResourceValue resourceValue, I_ThresholdDecayManager manager, bool retainRatioOnHigher, bool retainRatioOnLower)
         {
             this.maxValue = maxValue;
             this.retainRatioOnMaxHigher = retainRatioOnHigher;
@@ -61,6 +76,7 @@ namespace Ashen.DeliverySystem
             int maxValue = (int)this.maxValue.Get(deliveryTool);
             return new ThresholdEventValue
             {
+                resourceValue = resourceValue,
                 currentValue = currentValue,
                 max = currentValue >= currentMaxValue,
                 maxValue = currentMaxValue,
@@ -143,6 +159,7 @@ namespace Ashen.DeliverySystem
             }
             ThresholdEventValue value = new ThresholdEventValue
             {
+                resourceValue = resourceValue,
                 currentValue = currentValue,
                 max = max,
                 maxValue = currentMaxValue,
@@ -181,6 +198,7 @@ namespace Ashen.DeliverySystem
             }
             ThresholdEventValue value = new ThresholdEventValue
             {
+                resourceValue = resourceValue,
                 currentValue = currentValue,
                 max = max,
                 maxValue = newMaxValue,
@@ -198,7 +216,36 @@ namespace Ashen.DeliverySystem
 
         public void OnDamageEvent(DamageEvent damageEvent)
         {
-            ApplyAmount(damageEvent.damageAmount);
+            if (damageEvent.damageAmount < 0)
+            {
+                RemoveAmount(-damageEvent.damageAmount);
+            }
+            else
+            {
+                ApplyAmount(damageEvent.damageAmount);
+            }
+        }
+
+        public void OnTrigger(ExtendedEffectTrigger trigger)
+        {
+            ThresholdTriggerEventBuilder builder = triggerBuilders[(int)trigger];
+            if (builder == null)
+            {
+                return;
+            }
+            if (builder.type == ThresholdTriggerEventType.MAX)
+            {
+                int maxValue = (int)this.maxValue.Get(deliveryTool);
+                this.Reset(maxValue, this.enabled);
+            }
+            else if (builder.type == ThresholdTriggerEventType.MIN)
+            {
+                this.Reset(0, this.enabled);
+            }
+            else if (builder.type == ThresholdTriggerEventType.VALUE)
+            {
+                this.Reset((int)builder.value.Calculate(this.deliveryTool), this.enabled);
+            }
         }
     }
 }

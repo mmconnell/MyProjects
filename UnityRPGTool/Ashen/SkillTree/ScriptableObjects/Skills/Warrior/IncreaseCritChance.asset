@@ -1,0 +1,215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a434fc6e339ef1947b97347b8837da3e, type: 3}
+  m_Name: IncreaseCritChance
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 30bb3fc8c7193dc49bca245b5538fe63, type: 2}
+    - {fileID: 11400000}
+    - {fileID: 11400000, guid: aae4744503e1ef0458514e47a340e486, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: requirements
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[Ashen.SkillTree.I_SkillNodeRequirements,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 1|Ashen.SkillTree.OtherSkillNodeRequirement, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 0
+    - Name: levelRequired
+      Entry: 3
+      Data: 2
+    - Name: lineConfigurations
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[SkillNodeLineConfiguration, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 3|SkillNodeLineConfiguration, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 0
+    - Name: configuration
+      Entry: 7
+      Data: 4|UILocationConfiguration, Assembly-CSharp
+    - Name: rectSide
+      Entry: 3
+      Data: 3
+    - Name: coord
+      Entry: 3
+      Data: 2
+    - Name: bothResolver
+      Entry: 3
+      Data: 0
+    - Name: splitPercentage
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|SkillNodeLineConfiguration, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 1
+    - Name: configuration
+      Entry: 7
+      Data: 6|UILocationConfiguration, Assembly-CSharp
+    - Name: rectSide
+      Entry: 3
+      Data: 2
+    - Name: coord
+      Entry: 3
+      Data: 2
+    - Name: bothResolver
+      Entry: 3
+      Data: 0
+    - Name: splitPercentage
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: requirementConfiguration
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|Ashen.SkillTree.OtherSkillNodeRequirement, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 2
+    - Name: levelRequired
+      Entry: 3
+      Data: 1
+    - Name: lineConfigurations
+      Entry: 7
+      Data: 8|System.Collections.Generic.List`1[[SkillNodeLineConfiguration, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 9|SkillNodeLineConfiguration, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 2
+    - Name: configuration
+      Entry: 7
+      Data: 10|UILocationConfiguration, Assembly-CSharp
+    - Name: rectSide
+      Entry: 3
+      Data: 3
+    - Name: coord
+      Entry: 3
+      Data: 2
+    - Name: bothResolver
+      Entry: 3
+      Data: 0
+    - Name: splitPercentage
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|SkillNodeLineConfiguration, Assembly-CSharp
+    - Name: skillNode
+      Entry: 10
+      Data: 1
+    - Name: configuration
+      Entry: 7
+      Data: 12|UILocationConfiguration, Assembly-CSharp
+    - Name: rectSide
+      Entry: 3
+      Data: 2
+    - Name: coord
+      Entry: 3
+      Data: 2
+    - Name: bothResolver
+      Entry: 3
+      Data: 2
+    - Name: splitPercentage
+      Entry: 3
+      Data: 30
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: requirementConfiguration
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  skillName: Disaster
+  category: {fileID: 11400000, guid: 76ebc182f9e85c64c995054898f890b4, type: 2}
+  maxRanks: 8
+  skill: {fileID: 11400000, guid: 82d9f7f917100f64baee57ca0676cf0d, type: 2}
+  description: 
+  hasRequirements: 1
+  requirementsDisplayType: 0
+  skilNodeRequirements:
+    requiresBound: 0
+    sourceBound: 0
+    locationX: 0
+    locationY: 0

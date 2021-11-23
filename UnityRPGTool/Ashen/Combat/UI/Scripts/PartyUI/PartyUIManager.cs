@@ -7,8 +7,33 @@ using UnityEngine.UI;
 
 public class PartyUIManager : A_PartyUIManager<PartyUIManager>
 {
+    public GameObject damageTextCanvas;
+    public GameObject damageTextPrefab;
+    public List<PartyPositionManager> positionManagers;
+    public GameObject partyMemberUIPrefab;
+
     protected override void Start()
     {
+        foreach (PartyPositionManager positionManager in positionManagers)
+        {
+            GameObject partyPosition = Instantiate(partyMemberUIPrefab, positionManager.transform);
+            A_CharacterSelector selector = partyPosition.GetComponent<A_CharacterSelector>();
+
+            if (positionToManager == null)
+            {
+                positionToManager = new Dictionary<PartyPosition, A_CharacterSelector>();
+            }
+
+            if (positionToManager.ContainsKey(positionManager.position))
+            {
+                positionToManager[positionManager.position] = selector;
+            }
+            else
+            {
+                positionToManager.Add(positionManager.position, selector);
+            }
+            
+        }
         base.Start();
         foreach(PartyPosition position in PartyPositions.Instance)
         {
@@ -33,11 +58,11 @@ public class PartyUIManager : A_PartyUIManager<PartyUIManager>
     {
         if (!slot.HasRegisteredToolManager())
         {
-            slot.gameObject.SetActive(false);
+            slot.GetDisabler().SetActive(false);
         }
         else
         {
-            slot.gameObject.SetActive(true);
+            slot.GetDisabler().SetActive(true);
         }
     }
 

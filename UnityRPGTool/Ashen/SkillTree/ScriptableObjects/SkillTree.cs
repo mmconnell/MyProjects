@@ -9,5 +9,14 @@ namespace Ashen.SkillTree
     {
         [AutoPopulate]
         public List<SkillNode> skillNodes;
+
+        public List<NodeUI> noviceLeft;
+        public List<NodeUI> noviceRight;
+
+        public List<NodeUI> veteranLeft;
+        public List<NodeUI> veteranRight;
+
+        public List<NodeUI> masterLeft;
+        public List<NodeUI> masterRight;
     }
 }

@@ -45,14 +45,20 @@ MonoBehaviour:
     - Name: decayRate
       Entry: 10
       Data: 2
-    - Name: retainRatioOnMaxHigher
-      Entry: 5
-      Data: true
-    - Name: retainRatioOnMaxLower
-      Entry: 5
-      Data: false
+    - Name: maxIncrease
+      Entry: 3
+      Data: 0
+    - Name: maxDecrease
+      Entry: 3
+      Data: 1
+    - Name: triggerEvents
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
   listenOn:
   - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
+  color1: {r: 1, g: 0.69319046, b: 0, a: 1}
+  color2: {r: 1, g: 0.12588629, b: 0, a: 1}
+  displayName: HP

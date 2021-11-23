@@ -6,27 +6,30 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class TweenLayoutElement : MonoBehaviour
 {
-    Tweener expand;
-    Tweener retract;
+    public RectTransform parent;
+    public RectTransform toExpand;
+    public RectTransform toRetract;
 
-    LayoutElement layoutElement;
+    private float originalWidthExpand = 0f;
+    private float originalWidthRetract = 0f;
 
-    private void OnEnable()
+    public void Start()
     {
-        layoutElement = GetComponent<LayoutElement>();
-        
-        
+        originalWidthExpand = toExpand.rect.width;
+        originalWidthRetract = toRetract.rect.width;
     }
 
     [Button]
     public void Play()
     {
-        expand = DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 0f, .2f);
+        DOTween.To(() => toRetract.sizeDelta.x, x => toRetract.sizeDelta = new Vector2(x, toRetract.sizeDelta.y), 0f, .2f);
+        DOTween.To(() => toExpand.sizeDelta.x, x => toExpand.sizeDelta = new Vector2(x, toExpand.sizeDelta.y), parent.rect.width, .2f);
     }
 
     [Button]
     public void Rewind()
     {
-        retract = DOTween.To(() => layoutElement.preferredWidth, x => layoutElement.preferredWidth = x, 1000f, .2f);
+        DOTween.To(() => toRetract.sizeDelta.x, x => toRetract.sizeDelta = new Vector2(x, toRetract.sizeDelta.y), originalWidthRetract, .2f);
+        DOTween.To(() => toExpand.sizeDelta.x, x => toExpand.sizeDelta = new Vector2(x, toExpand.sizeDelta.y), originalWidthExpand, .2f);
     }
 }

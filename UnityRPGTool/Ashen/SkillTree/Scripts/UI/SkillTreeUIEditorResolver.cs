@@ -16,6 +16,14 @@ public class SkillTreeUIEditorResolver : MonoBehaviour
     HashSet<SkillTreeNodeUI> foundNodes;
     Dictionary<SkillNode, SkillTreeNodeUI> nodesToUI;
 
+    public void Update()
+    {
+        if (!skillTreeUi)
+        {
+            UpdateNodes();
+        }
+    }
+
     [Button]
     void UpdateNodes()
     {
@@ -55,9 +63,9 @@ public class SkillTreeUIEditorResolver : MonoBehaviour
                 {
                     node.skillNameText.text = node.skillNode.skillName;
                     EditorUtility.SetDirty(node.skillNameText);
-                    if (node.skillNode.skillNodeEffectBuilder != null)
+                    if (node.skillNode != null)
                     {
-                        node.maxValueText.text = node.skillNode.skillNodeEffectBuilder.Count + "";
+                        node.maxValueText.text = node.skillNode.maxRanks + "";
                         EditorUtility.SetDirty(node.maxValueText);
                     }
                 }
@@ -87,7 +95,14 @@ public class SkillTreeUIEditorResolver : MonoBehaviour
             if (node)
             {
                 foundNodes.Add(node);
-                nodesToUI.Add(node.skillNode, node);
+                if (nodesToUI.ContainsKey(node.skillNode))
+                {
+                    nodesToUI[node.skillNode] = node;
+                }
+                else
+                {
+                    nodesToUI.Add(node.skillNode, node);
+                }
                 if (!skillTreeUi.skillTreeUIs.Contains(node))
                 {
                     skillTreeUi.skillTreeUIs.Add(node);

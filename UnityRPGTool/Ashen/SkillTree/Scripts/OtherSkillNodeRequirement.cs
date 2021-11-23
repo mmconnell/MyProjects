@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using Manager;
+using System.Collections.Generic;
 
 namespace Ashen.SkillTree
 {
@@ -10,19 +11,17 @@ namespace Ashen.SkillTree
         [PropertyRange(1, nameof(Max))]
         public int levelRequired = 1;
 
+        [AutoPopulate]
+        public List<SkillNodeLineConfiguration> lineConfigurations;
+
+        [Title("Requirement Value"), HideLabel]
+        public SkillNodeRequirementsConfiguration requirementConfiguration;
+
         public int Max
         {
             get
             {
-                if (skillNode == null)
-                {
-                    return 1;
-                }
-                if (skillNode.skillNodeEffectBuilder == null)
-                {
-                    return 1;
-                }
-                return skillNode.skillNodeEffectBuilder.Count;
+                return skillNode.maxRanks;
             }
         }
 

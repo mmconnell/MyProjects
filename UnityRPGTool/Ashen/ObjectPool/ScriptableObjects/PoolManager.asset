@@ -25,3 +25,6 @@ MonoBehaviour:
     type: 2}
   deliveryContainerPool: {fileID: 11400000, guid: 76a751109024584499e7208d29249ba4,
     type: 2}
+  damageText: {fileID: 1723903243874472751, guid: de95abc36147518409479b435e295205,
+    type: 3}
+  defaultPrefabPools: []

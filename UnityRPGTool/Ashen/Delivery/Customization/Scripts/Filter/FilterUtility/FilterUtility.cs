@@ -33,9 +33,9 @@ namespace Ashen.DeliverySystem
                 {
                     break;
                 }
-                int toReduce = Mathf.Min(damageResult.DamageDone[(int)damageTypeEnum], totalDamageToReduce);
+                int toReduce = Mathf.Min(damageResult.GetDamage(damageTypeEnum), totalDamageToReduce);
                 toReduce = Mathf.Max(0, toReduce);
-                damageResult.DamageDone[(int)damageTypeEnum] -= toReduce;
+                damageResult.AddDamage(damageTypeEnum, -toReduce);
                 if (!reduceFromEach)
                 {
                     totalDamageToReduce -= toReduce;
@@ -50,10 +50,10 @@ namespace Ashen.DeliverySystem
             int total = 0;
             foreach (DamageType damageType in damageContainer.enums)
             {
-                if (deliveryResult.DamageDone[(int)damageType] > 0)
+                if (deliveryResult.GetDamage(damageType) > 0)
                 {
-                    total += deliveryResult.DamageDone[(int)damageType];
-                    deliveryResult.DamageDone[(int)damageType] = 0;
+                    total += deliveryResult.GetDamage(damageType);
+                    deliveryResult.ResetDamage(damageType);
                 }
             }
             return total;

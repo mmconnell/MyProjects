@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e840b5102d4d940408b155707c666b67, type: 3}
+  m_Name: GuierreiroAbilityiHolderConfiguration
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 00884c0becd477348828775634a60715, type: 2}
+    - {fileID: 11400000, guid: fa71e701410eeb5449f942aefbf70121, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: attackAbility
+      Entry: 10
+      Data: 0
+    - Name: defendAbility
+      Entry: 10
+      Data: 1
+    - Name: defaultAbilities
+      Entry: 6
+      Data: 

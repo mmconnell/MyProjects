@@ -39,7 +39,7 @@ namespace Ashen.DeliverySystem
             int total = GetAmount(dOwner, dTarget, deliveryArguments);
             ToolManager target = (dTarget as DeliveryTool).toolManager;
             DamageResult deliveryResult = targetDeliveryResult.GetResult<DamageResult>(DeliveryResultTypes.Instance.DAMAGE_RESULT_TYPE);
-            deliveryResult.DamageDone[(int)damageType] += total;
+            deliveryResult.AddDamage(damageType, total);
             if (total != 0)
             {
                 targetDeliveryResult.empty = false;

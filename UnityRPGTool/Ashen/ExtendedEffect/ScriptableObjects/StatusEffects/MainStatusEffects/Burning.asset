@@ -183,6 +183,9 @@ MonoBehaviour:
     - Name: effect
       Entry: 7
       Data: 18|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: useWeapon
+      Entry: 5
+      Data: false
     - Name: damageType
       Entry: 10
       Data: 2

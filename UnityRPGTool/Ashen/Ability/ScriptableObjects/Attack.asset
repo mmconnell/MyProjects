@@ -16,44 +16,106 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 69c603f7394d98049863f8a08b714e02, type: 2}
     - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
     - {fileID: 11400000, guid: 3f9ecf8d177547840a338ba10c1594da, type: 2}
+    - {fileID: 7072089214787878996, guid: 7e90851dc1d3b2746b7427fbb630d979, type: 3}
+    - {fileID: 11400000, guid: f49243b4e2ac42140a2cd8c63de25cad, type: 2}
+    - {fileID: 11400000, guid: b2b1ecc46e62e5c47a12c9b46cc01c50, type: 2}
+    - {fileID: 1692728361637996324, guid: b1863f78453bb1e4686fc74cdbe4f90f, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: deliveryPack
+    - Name: abilityBuilder
       Entry: 7
-      Data: 0|Ashen.DeliverySystem.DeliveryPackBuilder, Assembly-CSharp
-    - Name: visualize
+      Data: 0|AbilityBuilder, Assembly-CSharp
+    - Name: name
       Entry: 1
-      Data: 'Deal [Attack] OF Normal
-
-        Deal [WeaponStatusMultiplier] OF  weapon''s
-        damage type'
-    - Name: deliveryPack
+      Data: Attack
+    - Name: abilityTargeting
       Entry: 7
-      Data: 1|Ashen.DeliverySystem.ListEffectBuilder, Assembly-CSharp
-    - Name: effects
+      Data: 1|AbilityTargeting, Assembly-CSharp
+    - Name: targetType
+      Entry: 3
+      Data: 0
+    - Name: custom
+      Entry: 6
+      Data: 
+    - Name: attribute
       Entry: 7
-      Data: 2|System.Collections.Generic.List`1[[Ashen.DeliverySystem.I_EffectBuilder,
-        Assembly-CSharp]], mscorlib
+      Data: 2|AbilityTargetingAttribute, Assembly-CSharp
+    - Name: targetAttribute
+      Entry: 10
+      Data: 0
+    - Name: overrideRange
+      Entry: 7
+      Data: System.Nullable`1[[TargetRange, Assembly-CSharp]], mscorlib
     - Name: 
-      Entry: 12
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: overrideTarget
+      Entry: 6
+      Data: 
+    - Name: shouldOverrideAbilityTags
+      Entry: 5
+      Data: false
+    - Name: overrideAbilityTags
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: targetParty
+      Entry: 3
       Data: 1
     - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilityDeliveryPacks
       Entry: 7
-      Data: 3|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+      Data: 3|AbilityDeliveryPacks, Assembly-CSharp
+    - Name: deliveryPack
+      Entry: 7
+      Data: 4|Ashen.DeliverySystem.DeliveryPackBuilder, Assembly-CSharp
+    - Name: visualize
+      Entry: 1
+      Data: Deal [Attack] OF Normal
+    - Name: deliveryPack
+      Entry: 7
+      Data: 5|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: option
+      Entry: 3
+      Data: 0
     - Name: useWeapon
       Entry: 5
       Data: false
     - Name: damageType
       Entry: 10
+      Data: 1
+    - Name: damageTypes
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[Ashen.DeliverySystem.DamageType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
       Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: value
+      Entry: 7
+      Data: 7|Ashen.DeliverySystem.ScalingValueBuilder, Assembly-CSharp
     - Name: equation
       Entry: 7
-      Data: 4|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+      Data: 8|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
         Assembly-CSharp]], Assembly-CSharp
     - Name: usingConstant
       Entry: 3
@@ -63,7 +125,7 @@ MonoBehaviour:
       Data: 
     - Name: constant
       Entry: 7
-      Data: 5|Ashen.EquationSystem.Equation, Assembly-CSharp
+      Data: 9|Ashen.EquationSystem.Equation, Assembly-CSharp
     - Name: testData
       Entry: 5
       Data: false
@@ -78,17 +140,17 @@ MonoBehaviour:
       Data: 
     - Name: equationComponents
       Entry: 7
-      Data: 6|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+      Data: 10|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 7|Ashen.EquationSystem.AttributeValue, Assembly-CSharp
+      Data: 11|Ashen.EquationSystem.AttributeValue, Assembly-CSharp
     - Name: attribute
       Entry: 10
-      Data: 1
+      Data: 2
     - Name: useTarget
       Entry: 5
       Data: false
@@ -119,9 +181,219 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: multiplier
+      Entry: 6
+      Data: 
+    - Name: flat
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: preFilters
+      Entry: 6
+      Data: 
+    - Name: postFilters
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilityRequirements
+      Entry: 7
+      Data: 12|AbilityRequirements, Assembly-CSharp
+    - Name: requirements
+      Entry: 7
+      Data: 13|System.Collections.Generic.List`1[[I_AbilityRequirement, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: hasCosts
+      Entry: 5
+      Data: false
+    - Name: costs
+      Entry: 7
+      Data: 14|AbilityRequirementsCost, Assembly-CSharp
+    - Name: costType
+      Entry: 3
+      Data: 0
+    - Name: primaryResourceValue
+      Entry: 7
+      Data: 15|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: false
+    - Name: reason
+      Entry: 1
+      Data: Empty Equation
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 6
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: true
+    - Name: currentIndex
+      Entry: 3
+      Data: 0
+    - Name: canBeCached
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: healthValue
+      Entry: 7
+      Data: 16|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: false
+    - Name: reason
+      Entry: 1
+      Data: Empty Equation
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 6
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: true
+    - Name: currentIndex
+      Entry: 3
+      Data: 0
+    - Name: canBeCached
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: customRequirements
+      Entry: 7
+      Data: 17|System.Collections.Generic.List`1[[AbilityRequirementsCostCustom,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: doesGenerate
+      Entry: 5
+      Data: false
+    - Name: generates
+      Entry: 7
+      Data: 18|AbilityRequirementsCost, Assembly-CSharp
+    - Name: costType
+      Entry: 3
+      Data: 0
+    - Name: primaryResourceValue
+      Entry: 7
+      Data: 19|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: false
+    - Name: reason
+      Entry: 1
+      Data: Empty Equation
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 6
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: true
+    - Name: currentIndex
+      Entry: 3
+      Data: 0
+    - Name: canBeCached
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: healthValue
+      Entry: 7
+      Data: 20|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: false
+    - Name: reason
+      Entry: 1
+      Data: Empty Equation
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 6
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: true
+    - Name: currentIndex
+      Entry: 3
+      Data: 0
+    - Name: canBeCached
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: customRequirements
+      Entry: 7
+      Data: 21|System.Collections.Generic.List`1[[AbilityRequirementsCostCustom,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
     - Name: 
       Entry: 13
       Data: 
@@ -134,6 +406,293 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  targetType: 0
-  animation: {fileID: 2233144963156650330, guid: 2b81f5988ac5d8044a46016de408cb8d,
-    type: 3}
+    - Name: abilityAnimation
+      Entry: 7
+      Data: 22|AbilityAnimation, Assembly-CSharp
+    - Name: animation
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilitySpeed
+      Entry: 7
+      Data: 23|AbilitySpeed, Assembly-CSharp
+    - Name: option
+      Entry: 3
+      Data: 0
+    - Name: speedCategory
+      Entry: 10
+      Data: 4
+    - Name: speedEquation
+      Entry: 7
+      Data: 24|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+        Assembly-CSharp]], Assembly-CSharp
+    - Name: usingConstant
+      Entry: 3
+      Data: 0
+    - Name: variable
+      Entry: 6
+      Data: 
+    - Name: constant
+      Entry: 7
+      Data: 25|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: true
+    - Name: reason
+      Entry: 6
+      Data: 
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 7
+      Data: 26|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 27|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+    - Name: value
+      Entry: 4
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: false
+    - Name: currentIndex
+      Entry: 3
+      Data: 1
+    - Name: canBeCached
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: subAbilities
+      Entry: 7
+      Data: 28|System.Collections.Generic.List`1[[SubAbilityBuilder, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 29|SubAbilityBuilder, Assembly-CSharp
+    - Name: abilityTargeting
+      Entry: 7
+      Data: 30|SubAbilityTargeting, Assembly-CSharp
+    - Name: relativeTarget
+      Entry: 3
+      Data: 0
+    - Name: attribute
+      Entry: 7
+      Data: 31|AbilityTargetingAttribute, Assembly-CSharp
+    - Name: targetAttribute
+      Entry: 6
+      Data: 
+    - Name: overrideRange
+      Entry: 7
+      Data: System.Nullable`1[[TargetRange, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: overrideTarget
+      Entry: 10
+      Data: 5
+    - Name: shouldOverrideAbilityTags
+      Entry: 5
+      Data: false
+    - Name: overrideAbilityTags
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: addAbilityTags
+      Entry: 6
+      Data: 
+    - Name: targetParty
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilityDeliveryPacks
+      Entry: 7
+      Data: 32|AbilityDeliveryPacks, Assembly-CSharp
+    - Name: deliveryPack
+      Entry: 7
+      Data: 33|Ashen.DeliverySystem.DeliveryPackBuilder, Assembly-CSharp
+    - Name: visualize
+      Entry: 1
+      Data: Deal [Attack] OF Normal
+    - Name: deliveryPack
+      Entry: 7
+      Data: 34|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: option
+      Entry: 3
+      Data: 0
+    - Name: useWeapon
+      Entry: 5
+      Data: false
+    - Name: damageType
+      Entry: 10
+      Data: 1
+    - Name: damageTypes
+      Entry: 6
+      Data: 
+    - Name: value
+      Entry: 7
+      Data: 35|Ashen.DeliverySystem.ScalingValueBuilder, Assembly-CSharp
+    - Name: equation
+      Entry: 7
+      Data: 36|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+        Assembly-CSharp]], Assembly-CSharp
+    - Name: usingConstant
+      Entry: 3
+      Data: 0
+    - Name: variable
+      Entry: 6
+      Data: 
+    - Name: constant
+      Entry: 7
+      Data: 37|Ashen.EquationSystem.Equation, Assembly-CSharp
+    - Name: testData
+      Entry: 5
+      Data: false
+    - Name: validEquation
+      Entry: 5
+      Data: true
+    - Name: reason
+      Entry: 6
+      Data: 
+    - Name: parseReason
+      Entry: 6
+      Data: 
+    - Name: equationComponents
+      Entry: 7
+      Data: 38|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 39|Ashen.EquationSystem.AttributeValue, Assembly-CSharp
+    - Name: attribute
+      Entry: 10
+      Data: 2
+    - Name: useTarget
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: newCalculation
+      Entry: 5
+      Data: true
+    - Name: keepGoing
+      Entry: 5
+      Data: false
+    - Name: currentIndex
+      Entry: 3
+      Data: 1
+    - Name: canBeCached
+      Entry: 5
+      Data: true
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: multiplier
+      Entry: 6
+      Data: 
+    - Name: flat
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: preFilters
+      Entry: 6
+      Data: 
+    - Name: postFilters
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilityAnimation
+      Entry: 7
+      Data: 40|AbilityAnimation, Assembly-CSharp
+    - Name: animation
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: abilitySpeed
+      Entry: 7
+      Data: 41|SubAbilitySpeed, Assembly-CSharp
+    - Name: relativeSpeed
+      Entry: 3
+      Data: 1
+    - Name: speed
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

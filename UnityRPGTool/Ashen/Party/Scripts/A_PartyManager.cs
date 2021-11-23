@@ -8,14 +8,11 @@ using System;
 
 public abstract class A_PartyManager : SerializedMonoBehaviour
 {
+    [ShowInInspector]
     protected ToolManager[] toolManagerPosition;
 
     public Dictionary<PartyPosition, ToolManager> defaultPositions;
     public HashSet<PartyPosition> enabledPositions;
-
-    public List<RowHandler> rowTargetables;
-    public I_Targetable defaultRowTargetable;
-    public I_Targetable partyTargetable;
 
     [NonSerialized]
     public I_Targetable[] playerTargetables;
@@ -65,6 +62,70 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
             }
         }
         return null;
+    }
+
+    public I_Targetable GetFirstTargetableCharacterInRow(PartyRow partyRow)
+    {
+        foreach (PartyPosition partyPosition in PartyPositions.Instance)
+        {
+            if (partyPosition.row == partyRow && toolManagerPosition[(int)partyPosition] != null)
+            {
+                return playerTargetables[(int)partyPosition];
+            }
+        }
+        return null;
+    }
+
+    public I_Targetable GetLastTargetableCharacterInRow(PartyRow partyRow)
+    {
+        I_Targetable last = null;
+        foreach (PartyPosition partyPosition in PartyPositions.Instance)
+        {
+            if (partyPosition.row == partyRow && toolManagerPosition[(int)partyPosition] != null)
+            {
+                last = playerTargetables[(int)partyPosition];
+            }
+        }
+        return last;
+    }
+
+    public PartyPosition GetNextTargetableCharacterInRow(PartyPosition position)
+    {
+        bool found = false;
+        foreach (PartyPosition partyPosition in PartyPositions.Instance)
+        {
+            if (partyPosition == position)
+            {
+                found = true;
+                continue;
+            }
+            if (!found)
+            {
+                continue;
+            }
+            if (partyPosition.row == position.row && toolManagerPosition[(int)partyPosition] != null)
+            {
+                return partyPosition;
+            }
+        }
+        return null;
+    }
+
+    public PartyPosition GetPreviousTargetableCharacterInRow(PartyPosition position)
+    {
+        PartyPosition previous = null;
+        foreach (PartyPosition partyPosition in PartyPositions.Instance)
+        {
+            if (partyPosition == position)
+            {
+                break;
+            }
+            if (partyPosition.row == position.row && toolManagerPosition[(int)partyPosition] != null)
+            {
+                previous = partyPosition;
+            }
+        }
+        return previous;
     }
 
     public List<ToolManager> GetRowTargets(PartyRow partyRow)
@@ -144,29 +205,21 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
         }
 
         int random = UnityEngine.Random.Range(0, indexes.Count);
-        return PartyPositions.Instance[random];
+        return PartyPositions.Instance[indexes[random]];
     }
 
-    public RowHandler GetRandomRow()
+    public PartyRow GetRandomRow()
     {
-        bool[] enabledRows = new bool[Enum.GetValues(typeof(PartyRow)).Length];
-        List<int> indexes = new List<int>();
+        List<PartyRow> rows = new List<PartyRow>();
         foreach (PartyPosition position in PartyPositions.Instance)
         {
-            if (toolManagerPosition[(int)position] != null)
+            if (toolManagerPosition[(int)position] != null && !rows.Contains(position.row))
             {
-                enabledRows[(int)position.row] = true;
+                rows.Add(position.row);
             }
         }
-        for (int x = 0; x < rowTargetables.Count; x++)
-        {
-            if (enabledRows[(int)rowTargetables[x].row])
-            {
-                indexes.Add(x);
-            }
-        }
-        int random = UnityEngine.Random.Range(0, indexes.Count);
-        return rowTargetables[random];
+        int random = UnityEngine.Random.Range(0, rows.Count);
+        return rows[random];
     }
 
     public ToolManager GetRandom()
@@ -184,6 +237,36 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
         return toolManagerPosition[indexes[random]];
     }
 
+    public ToolManager GetRandom(List<PartyPosition> validPositions)
+    {
+        List<int> indexes = new List<int>();
+        foreach (PartyPosition position in PartyPositions.Instance)
+        {
+            if (validPositions.Contains(position) && toolManagerPosition[(int)position] != null)
+            {
+                indexes.Add((int)position);
+            }
+        }
+
+        int random = UnityEngine.Random.Range(0, indexes.Count);
+        return toolManagerPosition[indexes[random]];
+    }
+
+    public PartyPosition GetRandomInRow(PartyRow row)
+    {
+        List<PartyPosition> positions = new List<PartyPosition>();
+        foreach (PartyPosition position in PartyPositions.Instance)
+        {
+            if (toolManagerPosition[(int)position] != null && position.row == row)
+            {
+                positions.Add(position);
+            }
+        }
+
+        int random = UnityEngine.Random.Range(0, positions.Count);
+        return positions[random];
+    }
+
     public I_Targetable GetDefaultSingleTarget()
     {
         for (int x = 0; x < PartyPositions.Count; x++)
@@ -194,20 +277,6 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
             }
         }
         return null;
-    }
-
-    public I_Targetable GetDefaultRowTarget()
-    {
-        if (defaultRowTargetable == null)
-        {
-            defaultRowTargetable = rowTargetables[0];
-        }
-        return defaultRowTargetable;
-    }
-
-    public I_Targetable GetPartyTarget()
-    {
-        return partyTargetable;
     }
 
     public virtual void SetToolManager(PartyPosition position, ToolManager toolManager)
@@ -223,6 +292,22 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
     public ToolManager GetToolManager(int position)
     {
         return toolManagerPosition[position];
+    }
+
+    public I_Targetable GetTargetable(PartyPosition position)
+    {
+        return playerTargetables[(int)position];
+    }
+
+    public void DeselectAll()
+    {
+        foreach (I_Targetable targetable in playerTargetables)
+        {
+            if (targetable != null)
+            {
+                targetable.Deselected();
+            }
+        }
     }
 
     public void Swap(PartyPosition first, PartyPosition second)
@@ -264,5 +349,39 @@ public abstract class A_PartyManager : SerializedMonoBehaviour
             }
         }
         return null;
+    }
+
+    public bool HasActivePositionsInRow(PartyRow row)
+    {
+        for (int x = 0; x < PartyPositions.Count; x++)
+        {
+            if (toolManagerPosition[x] != null && PartyPositions.Instance[x].row == row)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public IEnumerable<PartyPosition> GetActivePositionsInRow(PartyRow row)
+    {
+        for (int x = 0; x < PartyPositions.Count; x++)
+        {
+            if (toolManagerPosition[x] != null && PartyPositions.Instance[x].row == row)
+            {
+                yield return PartyPositions.Instance[x];
+            }
+        }
+    }
+
+    public IEnumerable<PartyPosition> GetActivePositions()
+    {
+        for (int x = 0; x < PartyPositions.Count; x++)
+        {
+            if (toolManagerPosition[x] != null)
+            {
+                yield return PartyPositions.Instance[x];
+            }
+        }
     }
 }

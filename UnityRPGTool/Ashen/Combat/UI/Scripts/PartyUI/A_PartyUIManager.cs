@@ -11,8 +11,6 @@ public abstract class A_PartyUIManager<T> : SingletonMonoBehaviour<T> where T : 
     public Dictionary<PartyPosition, A_CharacterSelector> positionToManager;
 
     protected A_CharacterSelector[] managers;
-    public List<RowHandler> rowHandlers;
-    public A_PartySelector partySelector;
 
     protected virtual void Start()
     {
@@ -25,81 +23,9 @@ public abstract class A_PartyUIManager<T> : SingletonMonoBehaviour<T> where T : 
             }
         }
         A_PartyManager partyManager = GetPartyManager();
-        partyManager.rowTargetables = new List<RowHandler>();
-        partyManager.rowTargetables.AddRange(rowHandlers);
-        partyManager.partyTargetable = partySelector;
     }
 
     protected abstract A_PartyManager GetPartyManager();
-
-    public virtual void UpdateRows()
-    {
-        bool backRow = false;
-        bool frontRow = false;
-        foreach (PartyPosition position in PartyPositions.Instance)
-        {
-            A_CharacterSelector selector = managers[(int)position];
-
-            if (selector != null && selector.HasRegisteredToolManager())
-            {
-                if (position.row == PartyRow.BACK)
-                {
-                    backRow = true;
-                }
-                else
-                {
-                    frontRow = true;
-                }
-            }
-        }
-        RowHandler front = null;
-        RowHandler back = null;
-        foreach (RowHandler handler in rowHandlers)
-        {
-            if (handler.row == PartyRow.FRONT)
-            {
-                front = handler;
-            }
-            else
-            {
-                back = handler;
-            }
-        }
-        if (frontRow && backRow)
-        {
-            Navigation frontNav = front.navigation;
-            Navigation backNav = back.navigation;
-            frontNav.selectOnDown = back;
-            frontNav.selectOnUp = back;
-            backNav.selectOnDown = front;
-            backNav.selectOnUp = front;
-            front.navigation = frontNav;
-            back.navigation = backNav;
-            GetPartyManager().defaultRowTargetable = front;
-        }
-        else if (frontRow)
-        {
-            Navigation frontNav = front.navigation;
-            frontNav.selectOnDown = null;
-            frontNav.selectOnUp = null;
-            front.navigation = frontNav;
-            GetPartyManager().defaultRowTargetable = front;
-        }
-        else if (backRow)
-        {
-            // Shouldn't happen, but coding in case functionality is implemented
-            Navigation backNav = back.navigation;
-            backNav.selectOnDown = null;
-            backNav.selectOnUp = null;
-            back.navigation = backNav;
-            GetPartyManager().defaultRowTargetable = back;
-        }
-        else
-        {
-            // Shouldn't happen unless initially setting up combat
-            GetPartyManager().defaultRowTargetable = null;
-        }
-    }
 
     public virtual void Recalculate()
     {
@@ -107,7 +33,6 @@ public abstract class A_PartyUIManager<T> : SingletonMonoBehaviour<T> where T : 
         {
             Recalculate(position);
         }
-        UpdateRows();
     }
 
     private void Recalculate(PartyPosition position)

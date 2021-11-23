@@ -222,6 +222,15 @@ namespace Ashen.EquationSystem
             return result;
         }
 
+        public float Calculate(I_DeliveryTool source)
+        {
+            DeliveryArgumentPacks deliveryArguments = PoolManager.Instance.deliveryArgumentsPool.GetObject();
+            EquationArgumentPack equationArguments = deliveryArguments.GetPack<EquationArgumentPack>();
+            float result = Calculate(source, equationArguments);
+            deliveryArguments.Disable();
+            return result;
+        }
+
         public float Calculate(I_DeliveryTool source, EquationArgumentPack extraArguments)
         {
             if (IsCalculated(source))
@@ -307,13 +316,13 @@ namespace Ashen.EquationSystem
             else
             {
                 listeners = new List<InvalidationPack>
-            {
-                new InvalidationPack
                 {
-                    invalidationListener = listener,
-                    key = key
-                }
-            };
+                    new InvalidationPack
+                    {
+                        invalidationListener = listener,
+                        key = key
+                    }
+                };
                 invalidationListeners.Add(toolManager, listeners);
             }
         }

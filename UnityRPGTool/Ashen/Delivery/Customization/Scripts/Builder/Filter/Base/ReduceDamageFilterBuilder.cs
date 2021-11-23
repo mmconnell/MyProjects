@@ -9,14 +9,16 @@ namespace Ashen.DeliverySystem
     {
         [OdinSerialize, Hide, Title("Damage Types")]
         private DamageContainer damageContainer = default;
-        [OdinSerialize]
-        private int amountToReduceBy = default;
-        [OdinSerialize]
+        [OdinSerialize, HideIf(nameof(percentage))]
+        private ScalingValueBuilder amountToReduceBy = default;
+        [OdinSerialize, HideIf(nameof(percentage))]
         private bool reduceFromEach = default;
+        [OdinSerialize]
+        private bool percentage = default;
 
-        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target)
+        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks arguments)
         {
-            return new ReduceDamageFilter(damageContainer, amountToReduceBy, reduceFromEach);
+            return new ReduceDamageFilter(damageContainer, (amountToReduceBy == null ? 0 : (int)amountToReduceBy.Build(owner, target, arguments)), reduceFromEach, percentage);
         }
     }
 }

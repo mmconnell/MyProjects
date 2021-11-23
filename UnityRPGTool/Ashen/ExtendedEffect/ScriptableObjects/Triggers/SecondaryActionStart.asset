@@ -24,4 +24,4 @@ MonoBehaviour:
     - Name: index
       Entry: 3
       Data: 6
-  shouldRegister: 0
+  shouldRegister: 1

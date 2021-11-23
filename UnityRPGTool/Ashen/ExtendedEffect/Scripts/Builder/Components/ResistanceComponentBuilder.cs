@@ -20,7 +20,7 @@ namespace Ashen.DeliverySystem
         private ShiftCategory shiftCategory = default;
         [VerticalGroup(nameof(ResistanceComponent) + "/ResistanceAmount")]
         [OdinSerialize, HideLabel, Title("Equation")]
-        private Reference<I_Equation> equation = default;
+        private ScalingValueBuilder value;
 
         public I_ExtendedEffectComponent Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks deliveryArgument)
         {
@@ -28,7 +28,7 @@ namespace Ashen.DeliverySystem
             {
                 ResistanceType = ResistanceType,
                 shiftCategory = shiftCategory,
-                value = equation.Value.Calculate(owner, target, deliveryArgument.GetPack<EquationArgumentPack>())
+                value = value.Build(owner, target, deliveryArgument),
             };
         }
     }

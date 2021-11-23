@@ -8,7 +8,6 @@ public class EnemyTargetableRegister : SerializedMonoBehaviour
     public I_Targetable targetable;
     public EnemyPartyManager enemyPartyManager;
     public PartyPosition position;
-    public RowHandler rowHandler;
 
     private void Start()
     {
@@ -17,6 +16,5 @@ public class EnemyTargetableRegister : SerializedMonoBehaviour
             enemyPartyManager.playerTargetables = new I_Targetable[PartyPositions.Count];
         }
         enemyPartyManager.playerTargetables[(int)position] = targetable;
-        rowHandler.Recalculate();
     }
 }

@@ -24,6 +24,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 55285686f118925408c4d1200783731d, type: 2}
     - {fileID: 11400000, guid: 19400de009fc8e2489301f022f0c4d91, type: 2}
     - {fileID: 11400000, guid: 4adcc83b73d65e445b70cd39b4241459, type: 2}
+    - {fileID: 11400000, guid: 3e0b06d814150944bb23c6efdbe98c02, type: 2}
+    - {fileID: 11400000, guid: d12531ba447fd2e42b913d82f655dd2b, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -35,7 +37,7 @@ MonoBehaviour:
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 8
+      Data: 10
     - Name: 
       Entry: 10
       Data: 0
@@ -61,6 +63,12 @@ MonoBehaviour:
       Entry: 10
       Data: 7
     - Name: 
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 10
+      Data: 9
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -70,3 +78,10 @@ MonoBehaviour:
   UpdateTick: {fileID: 11400000, guid: 8bac2679edd7e0b43bfbb02d35083752, type: 2}
   TurnStart: {fileID: 11400000, guid: 8f273f7a44f87934697fdd372a686a19, type: 2}
   TurnEnd: {fileID: 11400000, guid: 15ecdf524ce732442a9456f031a33f77, type: 2}
+  ActionStart: {fileID: 11400000, guid: c5adbd3af473c774680387ff53cea42f, type: 2}
+  ActionEnd: {fileID: 11400000, guid: 55285686f118925408c4d1200783731d, type: 2}
+  Targeted: {fileID: 11400000, guid: 3e0b06d814150944bb23c6efdbe98c02, type: 2}
+  Effected: {fileID: 11400000, guid: d12531ba447fd2e42b913d82f655dd2b, type: 2}
+  BuffRecieved: {fileID: 11400000, guid: 48e91499f7bdb3246a84025dcffc9e43, type: 2}
+  BattleStart: {fileID: 11400000, guid: 13cfd898f8626c642a40d34f09dea8ca, type: 2}
+  BattleEnd: {fileID: 11400000, guid: 03af0d4dfcda61e4ab32408ec35a56de, type: 2}

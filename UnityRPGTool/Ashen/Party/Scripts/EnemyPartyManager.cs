@@ -19,5 +19,14 @@ public class EnemyPartyManager : A_PartyManager
     {
         base.SetToolManager(position, toolManager);
         playerTargetables[(int)position] = enemyPartyUIManager.positionToManager[position];
+        SpriteRenderer renderer = toolManager.GetComponent<SpriteRenderer>();
+        if (position.row == PartyRow.FRONT)
+        {
+            renderer.sortingOrder = 6;
+        }
+        else
+        {
+            renderer.sortingOrder = 1;
+        }
     }
 }

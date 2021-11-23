@@ -32,6 +32,17 @@ public class SkillTreeNodeUI : Selectable, ISubmitHandler
     public bool selected = false;
 
     EventSystem evt;
+    EventSystem Evt
+    {
+        get
+        {
+            if (evt == null)
+            {
+                evt = EventSystem.current;
+            }
+            return evt;
+        }
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -48,7 +59,7 @@ public class SkillTreeNodeUI : Selectable, ISubmitHandler
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
-        evt.SetSelectedGameObject(gameObject);
+        Evt.SetSelectedGameObject(gameObject);
     }
 
     public override void OnPointerExit(PointerEventData eventData)
@@ -157,12 +168,12 @@ public class SkillTreeNodeUI : Selectable, ISubmitHandler
         }
     }
 
-    // Start is called before the first frame update
-    protected override void Start()
+    public void RegisterSkillNode(SkillNode skillNode)
     {
-        skillTreeUI.RegisterNode(this);
-        evt = EventSystem.current;
-        base.Start();
+        this.skillNode = skillNode;
+        skillNameText.text = skillNode.skillName;
+        maxValueText.text = skillNode.maxRanks.ToString();
+        currentValueText.text = "0";
     }
 }
 

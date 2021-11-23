@@ -50,7 +50,7 @@ namespace Manager
         {
             int level = GetSkillNodeLevel(skillNode);
 
-            int maxLevel = skillNode.skillNodeEffectBuilder.Count;
+            int maxLevel = skillNode.maxRanks;
 
             if (level == maxLevel)
             {
@@ -74,7 +74,6 @@ namespace Manager
                     }
                 }
             }
-
             return true;
         }
 
@@ -82,7 +81,7 @@ namespace Manager
         {
             int level = GetSkillNodeLevel(skillNode);
 
-            int maxLevel = skillNode.skillNodeEffectBuilder.Count;
+            int maxLevel = skillNode.maxRanks;
             if (level == maxLevel)
             {
                 return NodeIncreaseRequestResponse.MAX_LEVEL;
@@ -99,16 +98,37 @@ namespace Manager
             {
                 currentEffect?.Disable(false);
             }
-            SkillNodeEffectBuilder builder = skillNode.skillNodeEffectBuilder[level];
-            DeliveryArgumentPacks packs = PoolManager.Instance.deliveryArgumentsPool.GetObject();
-            I_ExtendedEffect effect = builder.Build(deliveryTool, deliveryTool, packs);
-            currentEffects[skillNode] = effect;
+            ApplySkill(skillNode, level + 1);
+            return NodeIncreaseRequestResponse.SUCCESS;
+        }
+
+        private void ApplySkill(SkillNode skillNode, int rank)
+        {
+            if (skillNode.skill.skillType == Skill.SkillType.Ability)
+            {
+                Ability ability = skillNode.skill.GetAbilityForLevel(rank);
+                AbilityHolder ah = toolManager.Get<AbilityHolder>();
+                ah.GrantAbility(skillNode.skillName, ability);
+            }
+            else if (skillNode.skill.skillType == Skill.SkillType.Passive)
+            {
+                PassiveContainer container = skillNode.skill.GetPassiveForLevel(rank);
+                SkillNodeEffectBuilder builder = container.builder;
+                DeliveryArgumentPacks packs = PoolManager.Instance.deliveryArgumentsPool.GetObject();
+                EffectsArgumentPack effectPack = packs.GetPack<EffectsArgumentPack>();
+                foreach (A_EffectFloatArgument argument in EffectFloatArguments.Instance)
+                {
+                    if (container.ScaleDeliveryPacks[(int)argument] != null)
+                    {
+                        effectPack.SetFloatArgument(argument, (float)container.ScaleDeliveryPacks[(int)argument]);
+                    }
+                }
+                I_ExtendedEffect effect = builder.Build(deliveryTool, deliveryTool, packs);
+                currentEffects[skillNode] = effect;
+                effect.Enable();
+            }
             skillNodeToLevel[skillNode]++;
             skillPoints--;
-            effect.Enable();
-            packs.Disable();
-
-            return NodeIncreaseRequestResponse.SUCCESS;
         }
 
         public int GetCurrentLevel(SkillNode skillNode)
@@ -124,7 +144,7 @@ namespace Manager
         {
             if (skillNodeToLevel.TryGetValue(node, out int level))
             {
-                return level == node.skillNodeEffectBuilder.Count;
+                return level == node.maxRanks;
             }
             throw new Exception("Invalid skill node");
         }
@@ -161,12 +181,7 @@ namespace Manager
                 skillNodeToLevel[skillNode] = skillSaveData.level;
                 if (skillSaveData.level > 0)
                 {
-                    SkillNodeEffectBuilder builder = skillNode.skillNodeEffectBuilder[skillSaveData.level];
-                    DeliveryArgumentPacks packs = PoolManager.Instance.deliveryArgumentsPool.GetObject();
-                    I_ExtendedEffect effect = builder.Build(deliveryTool, deliveryTool, packs);
-                    currentEffects[skillNode] = effect;
-                    effect.Enable();
-                    packs.Disable();
+                    ApplySkill(skillNode, skillSaveData.level);
                 }
             }
         }

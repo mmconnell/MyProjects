@@ -16,4 +16,7 @@ public class DefaultValues : SingletonScriptableObject<DefaultValues>
     public GemGeneratorConfiguration defaultGemGeneratorConfiguration;
     public GemDropperConfiguration defaultGemDropperConfiguration;
     public ResourceValueToolConfiguration defaultResourceValueToolConfiguration;
+    public TargetAttributeToolConfiguration defaultTargetAttributeToolConfiguration;
+    public AbilityHolderConfiguration defaultAbilityHolderConfiguration;
+    public EquipmentToolConfiguration defaultEquipmentToolConfiguration;
 }

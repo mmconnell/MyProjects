@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Manager;
 using Ashen.DeliverySystem;
 using TMPro;
@@ -7,35 +6,33 @@ using JoshH.UI;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using DG.Tweening;
 
-public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
+public class PartyMemberManager : A_CharacterSelector, I_TriggerListener, I_DamageListener, I_ThresholdListener
 {
     [HideInInspector]
     public PartyUIManager partyUIManager;
 
-    public ArmorBarManager armorBarManager;
-    public HealthBarManager healthBarManager;
+    public ResourceBarManager healthBarManager;
     public ResourceBarManager resourceBarManager;
 
     public TextMeshProUGUI playerName;
 
-    public RowHandler rowHandler;
+    public UIGradient defaultColor;
+    public UIGradient selectedColor;
+    public UIGradient hitColor;
+    public UIGradient targetedColor;
 
-    private UIGradient gradient;
-    private ExtendedEffectTrigger primaryActionStart;
-    private ExtendedEffectTrigger primaryActionEnd;
-    private ExtendedEffectTrigger secondaryActionStart;
-    private ExtendedEffectTrigger secondaryActionEnd;
+    public DOTweenAnimation buffAnimation;
+    public DOTweenAnimation statDownAnimation;
 
+    public StatusEffectSymbolManagerUI symbolManager;
+    
+    private Tween damageTakenTween;
 
     protected override void Awake()
     {
         base.Awake();
-        gradient = GetComponent<UIGradient>();
-        primaryActionStart = ExtendedEffectTriggers.GetEnum("PrimaryActionStart");
-        primaryActionEnd = ExtendedEffectTriggers.GetEnum("PrimaryActionEnd");
-        secondaryActionStart = ExtendedEffectTriggers.GetEnum("SecondaryActionStart");
-        secondaryActionEnd = ExtendedEffectTriggers.GetEnum("SecondaryActionEnd");
     }
 
     public override void RegisterToolManager(ToolManager toolManager)
@@ -45,16 +42,32 @@ public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
         if (toolManager)
         {
             playerName.text = toolManager.gameObject.name;
-            this.healthBarManager.RegisterToolManager(toolManager);
-            this.resourceBarManager.RegisterToolManager(toolManager);
+            this.healthBarManager.RegisterToolManager(toolManager, ResourceValues.Instance.health);
+            ResourceValueTool resourceValueTool = toolManager.Get<ResourceValueTool>();
+            this.resourceBarManager.RegisterToolManager(toolManager, resourceValueTool.AbilityResourceValue);
             TriggerTool triggerTool = toolManager.Get<TriggerTool>();
             triggerTool.RegisterTriggerListener(primaryActionStart, this);
             triggerTool.RegisterTriggerListener(primaryActionEnd, this);
             triggerTool.RegisterTriggerListener(secondaryActionStart, this);
             triggerTool.RegisterTriggerListener(secondaryActionEnd, this);
+            triggerTool.RegisterTriggerListener(ExtendedEffectTriggers.Instance.BuffRecieved, this);
+            DamageTool damageTool = toolManager.Get<DamageTool>();
+            damageTool.RegisterListener(DamageTypes.Instance.NORMAL, this);
+            DOTweenAnimation[] anims = gameObject.GetComponents<DOTweenAnimation>();
+            if (anims != null)
+            {
+                for (int x = 0; x < anims.Length; x++)
+                {
+                    if (anims[x].id == "Hit")
+                    {
+                        damageTakenTween = anims[x].tween;
+                    }
+                }
+            }
+            StatusTool statusTool = toolManager.Get<StatusTool>();
+            statusTool.SymbolUI = symbolManager;
         }
         partyUIManager.Recalculate();
-        rowHandler.Recalculate();
     }
 
     public override void UnregisterToolManager()
@@ -66,13 +79,18 @@ public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
             triggerTool.UnregisterTriggerListener(primaryActionEnd, this);
             triggerTool.UnregisterTriggerListener(secondaryActionStart, this);
             triggerTool.UnregisterTriggerListener(secondaryActionEnd, this);
+            triggerTool.UnregisterTriggerListener(ExtendedEffectTriggers.Instance.BuffRecieved, this);
+            DamageTool damageTool = toolManager.Get<DamageTool>();
+            damageTool.UnRegisterListener(DamageTypes.Instance.NORMAL, this);
+            damageTakenTween = null;
+            StatusTool statusTool = toolManager.Get<StatusTool>();
+            statusTool.SymbolUI = null;
         }
         this.toolManager = null;
         playerName.text = "";
         healthBarManager.UnregisterToolManager();
         this.resourceBarManager.UnregisterToolManager();
         partyUIManager.Recalculate();
-        rowHandler.Recalculate();
     }
 
     private ExtendedEffectTrigger triggerLock = null;
@@ -84,16 +102,25 @@ public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
             if (triggerLock == null)
             {
                 triggerLock = trigger;
-                gradient.enabled = false;
+                selectedColor.enabled = true;
             }
         }
         else if (trigger == primaryActionEnd || trigger == secondaryActionEnd)
         {
             if ((trigger == primaryActionEnd && triggerLock == primaryActionStart) || (trigger == secondaryActionEnd && triggerLock == secondaryActionStart))
             {
-                gradient.enabled = true;
+                selectedColor.enabled = false;
                 triggerLock = null;
             }
+        }
+        else if (trigger == ExtendedEffectTriggers.Instance.BuffRecieved)
+        {
+            ListActionBundle bundles = new ListActionBundle();
+            bundles.Bundles.Add(new DoTweenObjectProcessor()
+            {
+                tween = statDownAnimation.tween
+            });
+            ExecuteInputState.Instance.AddSupportingAction(bundles);
         }
     }
 
@@ -102,24 +129,39 @@ public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
         PlayerInputState.Instance.chosenTarget = this;
     }
 
+    public override void OnMove(AxisEventData eventData)
+    {
+        PlayerInputState.Instance.moveDirection = eventData.moveDir;
+        base.OnMove(eventData);
+    }
+
     public override void OnSelect(BaseEventData eventData)
     {
-        Selected();
+        PlayerInputState.Instance.nextTarget = this;
     }
 
     public override void OnDeselect(BaseEventData eventData)
     {
-        Deselected();
     }
 
     public override void Selected()
     {
-        //throw new System.NotImplementedException();
+        targetedColor.enabled = true;
     }
 
     public override void Deselected()
     {
-        //throw new System.NotImplementedException();
+        targetedColor.enabled = false;
+    }
+
+    public override void TurnSelectionStart()
+    {
+        selectedColor.enabled = true;
+    }
+
+    public override void TurnSelectionEnd()
+    {
+        selectedColor.enabled = false;
     }
 
     public override Selectable GetSelectableObject()
@@ -136,5 +178,80 @@ public class PartyMemberManager : A_CharacterSelector, I_TriggerListener
 
     public override void OnCancel(BaseEventData eventData)
     {
+        PlayerInputState.Instance.backRequested = true;
+    }
+
+    public override GameObject GetDisabler()
+    {
+        return gameObject.transform.parent.gameObject;
+    }
+
+    public override void SelectedSecondary()
+    {
+        selectedColor.enabled = true;
+    }
+
+    public void OnDamageEvent(DamageEvent damageEvent)
+    {
+        if (damageEvent.damageAmount > 0)
+        {
+            ListActionBundle bundles = new ListActionBundle();
+
+            bundles.Bundles.Add(new CombatLogProcessor()
+            {
+                message = toolManager.gameObject.name + " suffered " + damageEvent.damageAmount + " damage!",
+            });
+            bundles.Bundles.Add(new EnableTemporarilyProcessor()
+            {
+                toEnable = hitColor,
+                totalTime = damageTakenTween.Duration(),
+            });
+            bundles.Bundles.Add(new DamageTextProcessor()
+            {
+                amount = damageEvent.damageAmount,
+                location = gameObject.transform,
+                damageTextPrefab = partyUIManager.damageTextPrefab,
+                parent = partyUIManager.damageTextCanvas,
+            });
+            bundles.Bundles.Add(new DoTweenObjectProcessor()
+            {
+                tween = damageTakenTween,
+                waitTime = .25f,
+            });
+            
+            ExecuteInputState.Instance.AddSupportingAction(bundles);
+        }
+        if (damageEvent.damageAmount < 0)
+        {
+            ListActionBundle bundles = new ListActionBundle();
+
+            bundles.Bundles.Add(new DamageTextProcessor()
+            {
+                amount = damageEvent.damageAmount,
+                location = gameObject.transform,
+                damageTextPrefab = partyUIManager.damageTextPrefab,
+                parent = partyUIManager.damageTextCanvas,
+            });
+        }
+    }
+
+    public void OnThresholdEvent(ThresholdEventValue value)
+    {
+        ResourceValueTool resourceValueTool = toolManager.Get<ResourceValueTool>();
+        if (value.resourceValue == resourceValueTool.AbilityResourceValue)
+        {
+            if (value.currentValue < value.previousValue)
+            {
+                ListActionBundle bundles = new ListActionBundle();
+
+                bundles.Bundles.Add(new DamageTextProcessor()
+                {
+                    amount = value.previousValue - value.currentValue,
+                    location = gameObject.transform,
+                    damageTextPrefab = partyUIManager.damageTextPrefab,
+                    parent = partyUIManager.damageTextCanvas,
+                });
+            }
+        }
     }
 }

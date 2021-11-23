@@ -1,39 +1,137 @@
-﻿using UnityEngine;
+﻿using Manager;
+using UnityEngine.EventSystems;
+using Ashen.DeliverySystem;
 using System.Collections;
 using System.Collections.Generic;
-using Manager;
 
-public class RowTargetHolder : I_TargetHolder
+public class RowTargetHolder : A_TargetHolder<RowTargetHolder>
 {
-    public I_Targetable target;
+    private PartyRow currentRow;
 
-    public I_TargetHolder Clone()
+    private bool resolvedTarget;
+
+    public override void Initialize()
     {
-        return new RowTargetHolder();
+        resolvedTarget = false;
     }
 
-    public I_Targetable GetRandomTargetable(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    public override void GetRandomTargetable(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder)
     {
-        return targetParty.GetRandomRow();
+        currentRow = targetParty.GetRandomRow();
     }
 
-    public I_Targetable GetTargetable(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    public override void SetTargetable(ToolManager source, ToolManager target, A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionProcessor)
     {
-        return targetParty.GetDefaultRowTarget();
+        PartyPosition position = targetParty.GetPosition(target);
+        this.currentRow = position.row;
     }
 
-    public List<ToolManager> GetTargets()
+    public override I_CombatProcessor ResolveTarget(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, I_AbilityAction ability)
     {
-        return this.target.GetTargets();
+        resolvedTarget = true;
+        ListActionBundle actions = new ListActionBundle();
+        if (!targetParty.HasActivePositionsInRow(currentRow))
+        {
+            currentRow = currentRow == PartyRow.FRONT ? PartyRow.BACK : PartyRow.FRONT;
+        }
+        List<PartyPosition> validPositions = GetValidPositions(source, sourceParty, targetParty, ability);
+        foreach (PartyPosition position in targetParty.GetActivePositionsInRow(currentRow))
+        {
+            if (!validPositions.Contains(position))
+            {
+                continue;
+            }
+            ToolManager manager = targetParty.GetToolManager((int)position);
+            actions.Bundles.Add(new SubactionProcessor()
+            { 
+                actionExecutable = new ActionExecutable()
+                {
+                    builder = ability.GetDeliveryPack(),
+                    target = manager,
+                    source = source,
+                    sourceAbility = ability,
+                }
+            });
+        }
+        return actions;
     }
 
-    public void ResolveTarget(A_PartyManager sourceParty, A_PartyManager targetParty, ActionHolder actionHolder)
+    public override void ResolveTargetRequest(A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder, PlayerInputState inputState)
     {
-        throw new System.NotImplementedException();
+        inputState.moveDirection = MoveDirection.None;
+        if (inputState.nextTarget == null || inputState.currentTarget == inputState.nextTarget)
+        {
+            inputState.nextTarget = null;
+            return;
+        }
+        if (inputState.currentTarget == null)
+        {
+            inputState.currentTarget = inputState.nextTarget;
+            inputState.nextTarget = null;
+            PartyPosition position = targetParty.GetPosition(inputState.currentTarget.GetTarget());
+            SelectAllForRow(position, targetParty, inputState);
+            return;
+        }
+        List<PartyPosition> validPositions = GetValidPositions(inputState.currentlySelected, sourceParty, targetParty, actionHolder.sourceAbility);
+        PartyPosition nextPosition = targetParty.GetPosition(inputState.nextTarget.GetTarget());
+        if (!validPositions.Contains(nextPosition))
+        {
+            inputState.nextTarget = null;
+            return;
+        }
+        if (nextPosition.row == currentRow)
+        {
+            inputState.nextTarget = null;
+            return;
+        }
+        SelectAllForRow(nextPosition, targetParty, inputState);
+        inputState.currentTarget = inputState.nextTarget;
+        inputState.nextTarget = null;
     }
 
-    public void SetTarget(I_Targetable targetable)
+    private void SelectAllForRow(PartyPosition position, A_PartyManager targetParty, PlayerInputState inputState)
     {
-        this.target = targetable;
+        foreach (PartyPosition prevPosition in targetParty.GetActivePositionsInRow(currentRow))
+        {
+            I_Targetable targetable = targetParty.GetTargetable(prevPosition);
+            if (targetable != null)
+            {
+                targetable.Deselected();
+            }
+        }
+
+        currentRow = position.row;
+
+        foreach (PartyPosition nextPosition in targetParty.GetActivePositionsInRow(currentRow))
+        {
+            I_Targetable targetable = targetParty.GetTargetable(nextPosition);
+            if (targetable != null)
+            {
+                targetable.Selected();
+            }
+        }
+    }
+
+    protected override void CleanupInternal(A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder, PlayerInputState inputState)
+    {
+        foreach (PartyPosition prevPosition in targetParty.GetActivePositionsInRow(currentRow))
+        {
+            I_Targetable targetable = targetParty.GetTargetable(prevPosition);
+            if (targetable != null)
+            {
+                targetable.Deselected();
+            }
+        }
+    }
+
+    public override bool HasNextTarget(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, I_AbilityAction ability)
+    {
+        return !resolvedTarget;
+    }
+
+    public override void GetTargetableByThreat(ToolManager source, A_PartyManager sourceParty, A_PartyManager targetParty, ActionProcessor actionHolder)
+    {
+        PartyPosition position = this.GetPositionByThreat(source, sourceParty, targetParty, actionHolder.sourceAbility);
+        currentRow = position.row;
     }
 }

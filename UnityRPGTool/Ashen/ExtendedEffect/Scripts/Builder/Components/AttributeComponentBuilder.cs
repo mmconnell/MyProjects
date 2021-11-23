@@ -13,12 +13,12 @@ namespace Ashen.DeliverySystem
         private DerivedAttribute attributeType = default;
         [OdinSerialize]
         private ShiftCategory shiftCategory = default;
-        [BoxGroup("Equation"), OdinSerialize, HideLabel]
-        private Reference<I_Equation> equation = default;
+        [OdinSerialize, Hide]
+        private ScalingValueBuilder value;
 
         public I_ExtendedEffectComponent Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks deliveryArgument)
         {
-            return new AttributeComponent(attributeType, shiftCategory, equation.Value.Calculate(owner, target, deliveryArgument.GetPack<EquationArgumentPack>()));
+            return new AttributeComponent(attributeType, shiftCategory, value.Build(owner, target, deliveryArgument));
         }
     }
 }

@@ -145,9 +145,9 @@ namespace Manager
                     statValues.Add(sa, 0);
                 }
             }
-            foreach (DerivedAttribute sa in DerivedAttributes.Instance)
+            if (values != null && values.Length == DerivedAttributes.Count)
             {
-                if (values != null && values.Length == DerivedAttributes.Count)
+                foreach (DerivedAttribute sa in DerivedAttributes.Instance)
                 {
                     statValues[sa] = values[(int)sa];
                 }

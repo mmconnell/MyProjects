@@ -15,7 +15,8 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -27,6 +28,12 @@ MonoBehaviour:
     - Name: deliveryResult
       Entry: 7
       Data: 0|Ashen.DeliverySystem.DamageResult, Assembly-CSharp
+    - Name: combineDamageCalculation
+      Entry: 5
+      Data: true
+    - Name: combineInto
+      Entry: 10
+      Data: 0
     - Name: 
       Entry: 8
       Data: 

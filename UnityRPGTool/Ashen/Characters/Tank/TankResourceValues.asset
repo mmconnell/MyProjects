@@ -20,7 +20,6 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: unitySliderListeners
-      Entry: 6
-      Data: 
+    SerializationNodes: []
+  defaultAbilityResource: {fileID: 11400000, guid: 939ab49ae30d99248bba37d3390e0d2c,
+    type: 2}

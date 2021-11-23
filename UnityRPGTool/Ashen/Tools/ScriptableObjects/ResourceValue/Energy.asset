@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ebb83bcfb7e49479e28e29d8d76bca, type: 3}
+  m_Name: Energy
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: a2f9922ae713b0c47bc70cc07ceae3a0, type: 2}
+    - {fileID: 11400000, guid: 8f273f7a44f87934697fdd372a686a19, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: index
+      Entry: 3
+      Data: 3
+    - Name: threshold
+      Entry: 7
+      Data: 0|Ashen.DeliverySystem.ThresholdBuilder, Assembly-CSharp
+    - Name: thresholdType
+      Entry: 3
+      Data: 1
+    - Name: maxValue
+      Entry: 10
+      Data: 0
+    - Name: hasDecay
+      Entry: 5
+      Data: false
+    - Name: decayDelay
+      Entry: 6
+      Data: 
+    - Name: decayRate
+      Entry: 6
+      Data: 
+    - Name: maxIncrease
+      Entry: 3
+      Data: 1
+    - Name: maxDecrease
+      Entry: 3
+      Data: 1
+    - Name: triggerEvents
+      Entry: 7
+      Data: 1|System.Collections.Generic.Dictionary`2[[Ashen.DeliverySystem.ExtendedEffectTrigger,
+        Assembly-CSharp],[Ashen.DeliverySystem.ThresholdTriggerEventBuilder, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 2|System.Collections.Generic.ObjectEqualityComparer`1[[Ashen.DeliverySystem.ExtendedEffectTrigger,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 3|Ashen.DeliverySystem.ThresholdTriggerEventBuilder, Assembly-CSharp
+    - Name: type
+      Entry: 3
+      Data: 0
+    - Name: value
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  listenOn: []
+  color1: {r: 0.6226415, g: 0.5209857, b: 0, a: 1}
+  color2: {r: 1, g: 0.911297, b: 0.4575472, a: 1}
+  displayName: Energy

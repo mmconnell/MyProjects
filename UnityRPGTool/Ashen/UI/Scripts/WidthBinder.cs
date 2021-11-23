@@ -23,7 +23,7 @@ public class WidthBinder : MonoBehaviour
     {
         if (Mathf.Abs((bound.rect.width * widthFactor) - rT.rect.width) > .01f)
         {
-            rT.sizeDelta = new Vector2(bound.rect.width * widthFactor, rT.rect.height);
+            rT.sizeDelta = new Vector2(bound.rect.width * widthFactor, rT.sizeDelta.y);
             LayoutRebuilder.ForceRebuildLayoutImmediate(bound);
         }
     }

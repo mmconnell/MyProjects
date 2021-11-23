@@ -19,11 +19,11 @@ namespace Ashen.DeliverySystem
             this.filter = filter;
         }
 
-        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target)
+        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks arguments)
         {
             if (Check(owner, target))
             {
-                return filter.Build(owner, target);
+                return filter.Build(owner, target, arguments);
             }
             return null;
         }

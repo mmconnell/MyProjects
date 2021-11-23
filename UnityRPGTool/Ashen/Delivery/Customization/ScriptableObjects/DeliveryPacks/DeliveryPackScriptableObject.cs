@@ -19,6 +19,7 @@ namespace Ashen.DeliverySystem
 
         [HideLabel, FoldoutGroup("Effect"), InlineProperty, Indent]
         public I_EffectBuilder deliveryPack;
+
         public List<Description> descriptions;
 
         [Button]

@@ -17,6 +17,8 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 65c506ecc63a64345ad389bf526dcf0f, type: 2}
+    - {fileID: 11400000, guid: 3f9ecf8d177547840a338ba10c1594da, type: 2}
+    - {fileID: 11400000, guid: 872859c9856d9d5499dfefd6653c4560, type: 2}
     - {fileID: 11400000, guid: 17a94135b37a5c7429cbfbb9af3cd3ad, type: 2}
     - {fileID: 11400000, guid: d4b8b503cecd0d94987983d1552d15cf, type: 2}
     SerializedBytesString: 
@@ -37,6 +39,9 @@ MonoBehaviour:
     - Name: 
       Entry: 7
       Data: 2|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: useWeapon
+      Entry: 5
+      Data: false
     - Name: damageType
       Entry: 10
       Data: 0
@@ -71,13 +76,28 @@ MonoBehaviour:
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 1
+      Data: 3
     - Name: 
       Entry: 7
-      Data: 6|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+      Data: 6|Ashen.EquationSystem.AttributeValue, Assembly-CSharp
+    - Name: attribute
+      Entry: 10
+      Data: 1
+    - Name: useTarget
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 7|Ashen.EquationSystem.BasicValue, Assembly-CSharp
     - Name: value
       Entry: 4
-      Data: 5
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -110,16 +130,16 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 7|Ashen.DeliverySystem.ExtendedEffectPackBuilder, Assembly-CSharp
+      Data: 8|Ashen.DeliverySystem.ExtendedEffectPackBuilder, Assembly-CSharp
     - Name: Copy
       Entry: 10
-      Data: 1
+      Data: 3
     - Name: TickerPack
       Entry: 7
-      Data: 8|Ashen.DeliverySystem.TimeTickerPack, Assembly-CSharp
+      Data: 9|Ashen.DeliverySystem.TimeTickerPack, Assembly-CSharp
     - Name: duration
       Entry: 7
-      Data: 9|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+      Data: 10|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
         Assembly-CSharp]], Assembly-CSharp
     - Name: usingConstant
       Entry: 3
@@ -129,7 +149,7 @@ MonoBehaviour:
       Data: 
     - Name: constant
       Entry: 7
-      Data: 10|Ashen.EquationSystem.Equation, Assembly-CSharp
+      Data: 11|Ashen.EquationSystem.Equation, Assembly-CSharp
     - Name: testData
       Entry: 5
       Data: false
@@ -144,14 +164,14 @@ MonoBehaviour:
       Data: 
     - Name: equationComponents
       Entry: 7
-      Data: 11|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+      Data: 12|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 12|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+      Data: 13|Ashen.EquationSystem.BasicValue, Assembly-CSharp
     - Name: value
       Entry: 4
       Data: 100
@@ -184,7 +204,7 @@ MonoBehaviour:
       Data: 
     - Name: frequency
       Entry: 7
-      Data: 13|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+      Data: 14|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
         Assembly-CSharp]], Assembly-CSharp
     - Name: usingConstant
       Entry: 3
@@ -194,7 +214,7 @@ MonoBehaviour:
       Data: 
     - Name: constant
       Entry: 7
-      Data: 14|Ashen.EquationSystem.Equation, Assembly-CSharp
+      Data: 15|Ashen.EquationSystem.Equation, Assembly-CSharp
     - Name: testData
       Entry: 5
       Data: false
@@ -209,14 +229,14 @@ MonoBehaviour:
       Data: 
     - Name: equationComponents
       Entry: 7
-      Data: 15|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+      Data: 16|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 16|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+      Data: 17|Ashen.EquationSystem.BasicValue, Assembly-CSharp
     - Name: value
       Entry: 4
       Data: 10
@@ -255,13 +275,16 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 7
-      Data: 17|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+      Data: 18|Ashen.DeliverySystem.DamagePackBuilder, Assembly-CSharp
+    - Name: useWeapon
+      Entry: 5
+      Data: false
     - Name: damageType
       Entry: 10
-      Data: 2
+      Data: 4
     - Name: equation
       Entry: 7
-      Data: 18|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
+      Data: 19|Ashen.VariableSystem.Reference`1[[Ashen.EquationSystem.I_Equation,
         Assembly-CSharp]], Assembly-CSharp
     - Name: usingConstant
       Entry: 3
@@ -271,7 +294,7 @@ MonoBehaviour:
       Data: 
     - Name: constant
       Entry: 7
-      Data: 19|Ashen.EquationSystem.Equation, Assembly-CSharp
+      Data: 20|Ashen.EquationSystem.Equation, Assembly-CSharp
     - Name: testData
       Entry: 5
       Data: false
@@ -286,14 +309,14 @@ MonoBehaviour:
       Data: 
     - Name: equationComponents
       Entry: 7
-      Data: 20|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
+      Data: 21|System.Collections.Generic.List`1[[Ashen.EquationSystem.I_EquationComponent,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 21|Ashen.EquationSystem.BasicValue, Assembly-CSharp
+      Data: 22|Ashen.EquationSystem.BasicValue, Assembly-CSharp
     - Name: value
       Entry: 4
       Data: 5

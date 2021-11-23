@@ -13,7 +13,7 @@ namespace Ashen.DeliverySystem
         [OdinSerialize]
         private Reference<I_Equation> total = default;
 
-        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target)
+        public I_Filter Build(I_DeliveryTool owner, I_DeliveryTool target, DeliveryArgumentPacks arguments)
         {
             int result = (int)total.Value.Calculate(owner, null);
             return new DamageShieldFilter(damageContainer, result);

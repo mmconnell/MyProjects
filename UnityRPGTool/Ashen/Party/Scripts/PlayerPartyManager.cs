@@ -10,5 +10,5 @@ public class PlayerPartyManager : A_PartyManager
     {
         base.Start();
         PlayerPartyHolder.Instance.partyManager = this;
-    }   
+    }
 }

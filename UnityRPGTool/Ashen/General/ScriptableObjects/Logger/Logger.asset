@@ -22,5 +22,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   isLoggingDebug: 0
-  isLoggingError: 0
+  isLoggingError: 1
   logTool: {fileID: 11400000, guid: 4bbcf2ea239cbef4da226723775cb1ce, type: 2}

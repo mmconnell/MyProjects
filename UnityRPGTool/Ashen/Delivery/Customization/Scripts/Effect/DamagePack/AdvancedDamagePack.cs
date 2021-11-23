@@ -51,7 +51,7 @@ namespace Ashen.DeliverySystem
                 DamageType damageType = pair.damageType;
                 float percent = pair.ratio;
                 int portion = (int)(total * percent);
-                deliveryResult.DamageDone[(int)damageType] += portion;
+                deliveryResult.AddDamage(damageType, portion);
                 if (portion != 0)
                 {
                     targetDeliveryResult.empty = false;

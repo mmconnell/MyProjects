@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Ashen.DeliverySystem;
+using Manager;
 
 namespace Ashen.DeliverySystem
 {
     public class BuildUpThresholdValue : A_ThresholdValue
     {
-        public BuildUpThresholdValue(DerivedAttribute maxValue, I_ThresholdDecayManager manager, bool retainRatioOnHigher, bool retainRatioOnLower)
-            : base(maxValue, manager, retainRatioOnHigher, retainRatioOnLower) { }
+        public BuildUpThresholdValue(DerivedAttribute maxValue, ResourceValue resourceValue, I_ThresholdDecayManager manager, bool retainRatioOnHigher, bool retainRatioOnLower)
+            : base(maxValue, resourceValue, manager, retainRatioOnHigher, retainRatioOnLower) { }
 
         public override void ClearDamage()
         {
@@ -41,6 +42,7 @@ namespace Ashen.DeliverySystem
             {
                 ThresholdEventValue value = new ThresholdEventValue
                 {
+                    resourceValue = resourceValue,
                     currentValue = currentValue,
                     previousValue = previous,
                     maxValue = currentMaxValue,
@@ -72,6 +74,7 @@ namespace Ashen.DeliverySystem
             {
                 ThresholdEventValue value = new ThresholdEventValue
                 {
+                    resourceValue = resourceValue,
                     currentValue = currentValue,
                     previousValue = previous,
                     maxValue = currentMaxValue,

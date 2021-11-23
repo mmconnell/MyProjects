@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c8181789adb1d44982ebd824e6845b, type: 3}
+  m_Name: MageSkillTree
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  skillNodes:
+  - {fileID: 11400000, guid: e5b8d64ec3164744595fe6ca60b64986, type: 2}
+  - {fileID: 11400000, guid: d1423ca73d3a03948a4475631bc84f5d, type: 2}
+  - {fileID: 11400000, guid: 7c8e97295e32a8846ac7a7a97f9c3749, type: 2}
+  - {fileID: 11400000, guid: 4d655c7f950f3a74f82d3c887e4602c1, type: 2}
+  noviceLeft:
+  - type: 0
+    space: 1
+    skillNode: {fileID: 0}
+  - type: 1
+    space: 1
+    skillNode: {fileID: 11400000, guid: 4d655c7f950f3a74f82d3c887e4602c1, type: 2}
+  noviceRight:
+  - type: 1
+    space: 1
+    skillNode: {fileID: 11400000, guid: e5b8d64ec3164744595fe6ca60b64986, type: 2}
+  - type: 1
+    space: 1
+    skillNode: {fileID: 11400000, guid: 7c8e97295e32a8846ac7a7a97f9c3749, type: 2}
+  - type: 1
+    space: 1
+    skillNode: {fileID: 11400000, guid: d1423ca73d3a03948a4475631bc84f5d, type: 2}
+  veteranLeft: []
+  veteranRight: []
+  masterLeft: []
+  masterRight: []
